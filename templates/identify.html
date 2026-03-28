@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcade — Identification</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/selector.css') }}">
+  <style>
+    .id-panel {
+      background: linear-gradient(160deg, #1a1208 0%, #0a0705 100%);
+      border: 2px solid #FFD700;
+      padding: 36px 44px 30px;
+      width: 90vw;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(255,215,0,0.1);
+    }
+    .id-title {
+      font-size: 44px;
+      letter-spacing: 10px;
+      color: #FFD700;
+      text-shadow: 0 0 14px rgba(255,215,0,0.35);
+      margin-bottom: 4px;
+    }
+    .id-subtitle {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #666;
+      margin-bottom: 28px;
+    }
+    .id-divider {
+      border: none;
+      border-top: 1px solid rgba(255,215,0,0.2);
+      margin: 0 0 24px;
+    }
+    .id-player-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .id-player-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      font-weight: bold;
+      padding-left: 4px;
+    }
+    .p1-label { color: #CC4400; }
+    .p2-label { color: #1A5FA0; }
+
+    /* Wrapper pour le champ pseudo + dropdown */
+    .autocomplete-wrap {
+      position: relative;
+      flex: 3;
+    }
+    .id-row {
+      display: flex;
+      gap: 10px;
+    }
+    .id-row input[type="text"],
+    .id-row input[type="number"] {
+      width: 100%;
+      background: #111;
+      border: 1px solid #444;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      padding: 9px 12px;
+      letter-spacing: 1px;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .id-row input[type="number"] { flex: 1; min-width: 64px; }
+    .id-row input::placeholder    { color: #555; }
+    .p1-block .autocomplete-wrap input:focus { border-color: #CC4400; }
+    .p2-block .autocomplete-wrap input:focus { border-color: #1A5FA0; }
+    .p1-block input[type="number"]:focus { border-color: #CC4400; }
+    .p2-block input[type="number"]:focus { border-color: #1A5FA0; }
+
+    .id-row label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #666;
+      align-self: center;
+      white-space: nowrap;
+    }
+
+    /* Dropdown suggestions */
+    .ac-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: #1a1208;
+      border: 1px solid #555;
+      border-top: none;
+      z-index: 50;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+    .ac-dropdown.open { display: block; }
+    .ac-item {
+      padding: 8px 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #ccc;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    .ac-item:hover, .ac-item.active { background: #2a1a08; color: #FFD700; }
+
+    .id-submit {
+      background: #FFD700;
+      color: #111;
+      border: none;
+      font-family: 'Courier New', monospace;
+      font-size: 15px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      padding: 13px 0;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .id-submit:hover  { background: #ffe84d; }
+    .id-submit:active { transform: scale(0.98); }
+
+    .id-error {
+      background: rgba(255,50,50,0.12);
+      border: 1px solid #FF4444;
+      color: #FF8888;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .id-note {
+      font-size: 9px;
+      color: #444;
+      letter-spacing: 1px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body class="selector-body">
+  <div class="id-panel">
+    <h1 class="id-title">ARCADE</h1>
+    <p class="id-subtitle">IDENTIFICATION DES JOUEURS</p>
+    <hr class="id-divider">
+
+    {% if error %}
+    <div class="id-error">&#9888; {{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/" id="id-form">
+
+      <!-- Joueur 1 -->
+      <div class="id-player-block p1-block">
+        <span class="id-player-label p1-label">JOUEUR 1</span>
+        <div class="id-row">
+          <div class="autocomplete-wrap">
+            <input type="text" name="p1_name" id="p1_name" maxlength="20"
+                   placeholder="Pseudo" autocomplete="off" spellcheck="false"
+                   value="{{ request.form.p1_name or '' }}" required>
+            <div class="ac-dropdown" id="p1-dropdown"></div>
+          </div>
+          <label>ÂGE</label>
+          <input type="number" name="p1_age" id="p1_age" min="1" max="120"
+                 placeholder="—" value="{{ request.form.p1_age or '' }}" required>
+        </div>
+      </div>
+
+      <!-- Joueur 2 -->
+      <div class="id-player-block p2-block">
+        <span class="id-player-label p2-label">JOUEUR 2</span>
+        <div class="id-row">
+          <div class="autocomplete-wrap">
+            <input type="text" name="p2_name" id="p2_name" maxlength="20"
+                   placeholder="Pseudo" autocomplete="off" spellcheck="false"
+                   value="{{ request.form.p2_name or '' }}" required>
+            <div class="ac-dropdown" id="p2-dropdown"></div>
+          </div>
+          <label>ÂGE</label>
+          <input type="number" name="p2_age" id="p2_age" min="1" max="120"
+                 placeholder="—" value="{{ request.form.p2_age or '' }}" required>
+        </div>
+      </div>
+
+      <button type="submit" class="id-submit">ENTRER &#9658;</button>
+    </form>
+
+    <p class="id-note">
+      Pseudo déjà utilisé ? Saisissez le même âge pour vous reconnecter.
+    </p>
+  </div>
+
+  <script>
+    /**
+     * Autocomplete générique pour un champ pseudo.
+     * inputEl     : <input type="text">
+     * dropdownEl  : <div.ac-dropdown>
+     * onSelect(name) : callback quand un item est sélectionné
+     */
+    function initAutocomplete(inputEl, dropdownEl, onSelect) {
+      let activeIdx = -1;
+      let debounce  = null;
+
+      inputEl.addEventListener('input', () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(() => fetchSuggestions(inputEl.value), 160);
+      });
+
+      inputEl.addEventListener('keydown', e => {
+        const items = dropdownEl.querySelectorAll('.ac-item');
+        if (!items.length) return;
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          activeIdx = Math.min(activeIdx + 1, items.length - 1);
+          _highlight(items, activeIdx);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          activeIdx = Math.max(activeIdx - 1, 0);
+          _highlight(items, activeIdx);
+        } else if (e.key === 'Enter' && activeIdx >= 0) {
+          e.preventDefault();
+          items[activeIdx].click();
+        } else if (e.key === 'Escape') {
+          close();
+        }
+      });
+
+      // Ferme si clic ailleurs
+      document.addEventListener('click', e => {
+        if (!inputEl.contains(e.target) && !dropdownEl.contains(e.target)) close();
+      });
+
+      function fetchSuggestions(q) {
+        if (!q) { close(); return; }
+        fetch('/api/players?q=' + encodeURIComponent(q))
+          .then(r => r.json())
+          .then(names => {
+            dropdownEl.innerHTML = '';
+            activeIdx = -1;
+            if (!names.length) { close(); return; }
+            names.forEach(name => {
+              const item = document.createElement('div');
+              item.className = 'ac-item';
+              item.textContent = name;
+              item.addEventListener('mousedown', e => {
+                e.preventDefault(); // évite le blur sur l'input
+                onSelect(name);
+                close();
+              });
+              dropdownEl.appendChild(item);
+            });
+            dropdownEl.classList.add('open');
+          })
+          .catch(() => close());
+      }
+
+      function _highlight(items, idx) {
+        items.forEach((el, i) => el.classList.toggle('active', i === idx));
+      }
+
+      function close() {
+        dropdownEl.innerHTML = '';
+        dropdownEl.classList.remove('open');
+        activeIdx = -1;
+      }
+    }
+
+    // Init P1
+    initAutocomplete(
+      document.getElementById('p1_name'),
+      document.getElementById('p1-dropdown'),
+      name => { document.getElementById('p1_name').value = name; }
+    );
+
+    // Init P2
+    initAutocomplete(
+      document.getElementById('p2_name'),
+      document.getElementById('p2-dropdown'),
+      name => { document.getElementById('p2_name').value = name; }
+    );
+  </script>
+</body>
+</html>

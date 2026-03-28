@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>PlayTank</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='playtank/css/style.css') }}">
+</head>
+<body>
+
+  <!-- Avertissement portrait (mobile) -->
+  <div id="portrait-warning">
+    <div class="pw-box">
+      <div class="pw-icon">&#8635;</div>
+      <p>Tournez votre appareil</p>
+      <p>en mode <strong>paysage</strong></p>
+    </div>
+  </div>
+
+  <!-- Écran d'accueil -->
+  <div id="welcome-screen" class="overlay">
+    <div class="panel">
+      <h1 class="game-title">PLAY<span>TANK</span></h1>
+      <p class="subtitle">JEU DE TANKS &bull; 2 JOUEURS</p>
+      <hr class="divider">
+
+      <div class="player-row p1-row">
+        <span class="player-tag p1-tag">P1</span>
+        <input id="p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="player-row p2-row">
+        <span class="player-tag p2-tag">P2</span>
+        <input id="p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false">
+      </div>
+
+      <button id="start-btn" class="big-btn">JOUER &#9658;</button>
+
+      <div class="controls-grid">
+        <div class="ctrl-col p1-ctrl">
+          <strong class="p1-col">JOUEUR 1</strong>
+          <span>Q / D &mdash; avancer</span>
+          <span>T / G &mdash; tourelle</span>
+          <span>ESPACE &mdash; tir</span>
+        </div>
+        <div class="ctrl-sep"></div>
+        <div class="ctrl-col p2-ctrl">
+          <strong class="p2-col">JOUEUR 2</strong>
+          <span>&#8592; / &#8594; &mdash; avancer</span>
+          <span>NUM4 / NUM6 &mdash; tourelle</span>
+          <span>ENTREE &mdash; tir</span>
+        </div>
+      </div>
+      <p class="touch-note">Sur mobile : boutons tactiles affichés à l'écran</p>
+    </div>
+  </div>
+
+  <!-- Écran de fin -->
+  <div id="gameover-screen" class="overlay" style="display:none">
+    <div class="panel wide-panel">
+      <div id="winner-banner"></div>
+      <div id="game-stats"></div>
+      <hr class="divider">
+      <h3 class="lb-title">MEILLEURS SCORES</h3>
+      <div id="leaderboard"></div>
+      <div class="end-buttons">
+        <button id="replay-btn" class="big-btn secondary-btn">&#9664; REJOUER</button>
+        <button id="menu-btn"   class="big-btn">MENU &#8962;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas de jeu -->
+  <div id="game-container">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+
+  <!-- Scripts (ordre important) -->
+  <script src="{{ url_for('static', filename='playtank/js/config.js') }}"></script>
+  <script src="{{ url_for('static', filename='playtank/js/terrain.js') }}"></script>
+  <script src="{{ url_for('static', filename='playtank/js/tank.js') }}"></script>
+  <script src="{{ url_for('static', filename='playtank/js/projectile.js') }}"></script>
+  <script src="{{ url_for('static', filename='playtank/js/input.js') }}"></script>
+  <script src="{{ url_for('static', filename='playtank/js/ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='playtank/js/game.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+.selector-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at center, #1a0e05 0%, #0a0705 70%);
+  overflow: auto;
+}
+.selector-container {
+  text-align: center;
+  padding: 32px 20px;
+}
+.selector-title {
+  font-size: 52px;
+  letter-spacing: 12px;
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.4);
+  margin-bottom: 6px;
+}
+.selector-subtitle {
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #666;
+  margin-bottom: 40px;
+}
+.game-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.game-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(160deg, #1a1208 0%, #080604 100%);
+  border: 2px solid #333;
+  padding: 28px 32px 24px;
+  width: 280px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.tank-card:hover {
+  border-color: #CC4400;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(204,68,0,0.25);
+}
+.galaxy-card:hover {
+  border-color: #22AAFF;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(34,170,255,0.25);
+}
+.card-art {
+  width: 120px;
+  height: 80px;
+  margin-bottom: 16px;
+  background: #0a0806;
+  border: 1px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+}
+.card-art svg {
+  width: 100%;
+  height: 100%;
+}
+.galaxy-card .card-art {
+  background: #00000e;
+}
+.card-title {
+  font-size: 20px;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.tank-title   { color: #CC4400; }
+.tank-title span { color: #FFD700; }
+.galaxy-title { color: #22AAFF; font-size: 16px; }
+.galaxy-title span { color: #00EEFF; }
+.card-desc {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.card-btn {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  padding: 10px 24px;
+  border: 2px solid;
+  transition: background 0.15s;
+}
+.tank-btn {
+  color: #FFD700;
+  border-color: #FFD700;
+}
+.tank-card:hover .tank-btn {
+  background: rgba(255,215,0,0.15);
+}
+.galaxy-btn {
+  color: #00EEFF;
+  border-color: #00EEFF;
+}
+.galaxy-card:hover .galaxy-btn {
+  background: rgba(0,238,255,0.1);
+}
+@media (max-width: 640px) {
+  .selector-title { font-size: 36px; }
+  .game-cards { gap: 20px; }
+  .game-card { width: 240px; padding: 20px; }
+}

@@ -1,0 +1,214 @@
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold:   #FFD700;
+  --orange: #CC4400;
+  --blue:   #1A5FA0;
+  --dark:   #1a0e05;
+  --sand:   #C2955D;
+  --bg:     #0a0705;
+}
+
+body {
+  background: var(--bg);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
+  color: #eee;
+}
+
+/* ── Portrait warning ──────────────────────────────────── */
+#portrait-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--dark);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+@media (orientation: portrait) {
+  #portrait-warning { display: flex; }
+  .overlay, #game-container { display: none !important; }
+}
+.pw-box { color: var(--gold); }
+.pw-icon { font-size: 64px; animation: spin 2s linear infinite; }
+.pw-box p { font-size: 18px; letter-spacing: 2px; margin-top: 10px; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ── Game container + canvas ───────────────────────────── */
+#game-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#gameCanvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+}
+
+/* ── Overlays ──────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.82);
+  z-index: 100;
+}
+
+/* ── Panel ─────────────────────────────────────────────── */
+.panel {
+  background: linear-gradient(160deg, #1f1208 0%, #0a0705 100%);
+  border: 2px solid var(--gold);
+  padding: 28px 36px 24px;
+  min-width: 360px;
+  max-width: 480px;
+  width: 90vw;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(255,180,0,0.15), inset 0 0 60px rgba(0,0,0,0.4);
+}
+.wide-panel { max-width: 580px; }
+
+/* ── Title ─────────────────────────────────────────────── */
+.game-title {
+  font-size: 42px;
+  letter-spacing: 8px;
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(255,215,0,0.4);
+}
+.game-title span { color: var(--orange); }
+.subtitle {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #888;
+  margin-top: 4px;
+}
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,215,0,0.25);
+  margin: 18px 0;
+}
+
+/* ── Player inputs ─────────────────────────────────────── */
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.player-tag {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  padding: 4px 8px;
+  border: 1px solid;
+  min-width: 36px;
+}
+.p1-tag { color: var(--orange); border-color: var(--orange); }
+.p2-tag { color: var(--blue);   border-color: var(--blue);   }
+
+input[type="text"] {
+  flex: 1;
+  background: #111;
+  border: 1px solid #444;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+  padding: 8px 12px;
+  letter-spacing: 2px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.p1-row input:focus { border-color: var(--orange); }
+.p2-row input:focus { border-color: var(--blue); }
+
+/* ── Buttons ───────────────────────────────────────────── */
+.big-btn {
+  background: var(--gold);
+  color: #111;
+  border: none;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  padding: 12px 28px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 16px;
+  transition: background 0.15s, transform 0.1s;
+}
+.big-btn:hover  { background: #ffe84d; }
+.big-btn:active { transform: scale(0.97); }
+.secondary-btn  { background: transparent; color: var(--gold); border: 2px solid var(--gold); }
+.secondary-btn:hover { background: rgba(255,215,0,0.1); }
+
+/* ── Controls hint ─────────────────────────────────────── */
+.controls-grid {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  text-align: left;
+  font-size: 10px;
+}
+.ctrl-col { flex: 1; display: flex; flex-direction: column; gap: 4px; color: #999; }
+.ctrl-col strong { font-size: 11px; letter-spacing: 2px; margin-bottom: 4px; }
+.ctrl-sep { width: 1px; background: rgba(255,215,0,0.2); }
+.p1-col { color: var(--orange); }
+.p2-col { color: var(--blue); }
+.touch-note { font-size: 9px; color: #555; margin-top: 12px; letter-spacing: 1px; }
+.end-buttons { display: flex; gap: 12px; margin-top: 16px; }
+.end-buttons .big-btn { margin-top: 0; }
+
+/* ── Winner banner ─────────────────────────────────────── */
+#winner-banner {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+/* ── Game stats ────────────────────────────────────────── */
+#game-stats {
+  font-size: 11px;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+/* ── Leaderboard ───────────────────────────────────────── */
+.lb-title {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-bottom: 10px;
+  text-align: center;
+}
+#leaderboard {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+#leaderboard table { width: 100%; border-collapse: collapse; }
+#leaderboard th {
+  color: var(--gold);
+  text-align: left;
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+#leaderboard td {
+  padding: 5px 8px;
+  color: #ccc;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+#leaderboard tr.new-entry td { color: var(--gold); }
+#leaderboard tr:nth-child(1) td { color: #fff; }

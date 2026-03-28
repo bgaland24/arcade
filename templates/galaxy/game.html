@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Galaxy Space Attack Invader</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='galaxy/css/galaxy.css') }}">
+</head>
+<body>
+
+  <div id="portrait-warning">
+    <div class="pw-box">
+      <div class="pw-icon">&#8635;</div>
+      <p>Tournez votre appareil</p>
+      <p>en mode <strong>paysage</strong></p>
+    </div>
+  </div>
+
+  <!-- Welcome screen -->
+  <div id="galaxy-welcome" class="gx-overlay">
+    <div class="gx-panel">
+      <a href="/" class="back-link">&#9664; ACCUEIL</a>
+      <h1 class="gx-title">GALAXY<br><span>SPACE ATTACK</span></h1>
+      <p class="gx-subtitle">COOP 2 JOUEURS &bull; VAGUES INFINIES</p>
+      <hr class="gx-divider">
+      <div class="player-row gx-p1-row">
+        <span class="player-tag gx-p1-tag">P1</span>
+        <input id="gx-p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="player-row gx-p2-row">
+        <span class="player-tag gx-p2-tag">P2</span>
+        <input id="gx-p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false">
+      </div>
+      <button id="gx-start-btn" class="gx-btn">JOUER &#9658;</button>
+      <div class="gx-controls-grid">
+        <div class="ctrl-col">
+          <strong class="gx-p1-col">JOUEUR 1</strong>
+          <span>WASD — déplacer</span>
+          <span>Auto — tir automatique</span>
+          <span>ESPACE — bombe</span>
+        </div>
+        <div class="ctrl-sep"></div>
+        <div class="ctrl-col">
+          <strong class="gx-p2-col">JOUEUR 2</strong>
+          <span>&#8592;&#8593;&#8595;&#8594; — déplacer</span>
+          <span>Auto — tir automatique</span>
+          <span>ENTREE — bombe</span>
+        </div>
+      </div>
+      <p class="touch-note">Sur mobile : boutons tactiles affichés à l'écran</p>
+    </div>
+  </div>
+
+  <!-- Game over screen -->
+  <div id="galaxy-gameover" class="gx-overlay" style="display:none">
+    <div class="gx-panel gx-wide-panel">
+      <div id="gx-result-banner"></div>
+      <div id="gx-result-stats"></div>
+      <hr class="gx-divider">
+      <h3 class="gx-lb-title">MEILLEURS SCORES</h3>
+      <div id="gx-leaderboard"></div>
+      <div class="gx-end-buttons">
+        <button id="gx-replay-btn" class="gx-btn gx-secondary-btn">&#9664; REJOUER</button>
+        <a href="/" class="gx-btn gx-menu-link">MENU &#8962;</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <canvas id="gxCanvas"></canvas>
+  </div>
+
+  <!-- Script load order is critical -->
+  <script src="{{ url_for('static', filename='galaxy/js/gx-config.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-input.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-particles.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-bullet.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-powerup.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-player.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-enemy.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-boss.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-wave.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-hud.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxy/js/gx-game.js') }}"></script>
+</body>
+</html>
