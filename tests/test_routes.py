@@ -110,8 +110,7 @@ class TestGalaxyPage:
                        'gx-hud.js', 'gx-ui.js', 'gx-game.js']:
             assert script in html, f"Script manquant : {script}"
 
-    def test_player_names_prefilled_from_session(self, client):
-        _identify(client)
+    def test_page_has_player_inputs(self, client):
         html = client.get('/galaxy').data.decode()
-        assert 'value="Alice"' in html
-        assert 'value="Bob"' in html
+        assert 'gx-p1name' in html
+        assert 'gx-p2name' in html

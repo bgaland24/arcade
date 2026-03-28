@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from core.db import init_db, get_db  # noqa: F401 — init_db ré-exporté pour wsgi.py
 from games.playtank import blueprint as playtank_bp
@@ -6,7 +9,7 @@ from games.pongpong import blueprint as pongpong_bp
 from datetime import datetime, timezone
 
 app = Flask(__name__)
-app.secret_key = 'arcade-secret-key-change-in-prod'
+app.secret_key = os.environ.get('SECRET_KEY', 'arcade-secret-key-change-in-prod')
 
 app.register_blueprint(playtank_bp)
 app.register_blueprint(galaxy_bp)
