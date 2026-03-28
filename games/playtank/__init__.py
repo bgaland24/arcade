@@ -34,9 +34,10 @@ def post_score():
     score       = calculate_score(time_sec, shots_fired, shots_hit)
     accuracy    = shots_hit / shots_fired
     save_score(GAME_ID, score, {
-        'player_name': data['player_name'][:20],
-        'time_seconds': round(time_sec, 1),
-        'accuracy':     round(accuracy, 3),
-        'shells_used':  shots_fired,
+        'player_name':   data['player_name'][:20],
+        'opponent_name': str(data.get('opponent_name', ''))[:20],
+        'time_seconds':  round(time_sec, 1),
+        'accuracy':      round(accuracy, 3),
+        'shells_used':   shots_fired,
     })
     return jsonify({'score': score})

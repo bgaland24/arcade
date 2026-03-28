@@ -1,0 +1,49 @@
+'use strict';
+const PP = {
+  W: 800, H: 450,
+
+  PADDLE_W: 14, PADDLE_H: 80,
+  PADDLE_X_OFFSET: 22,
+  PADDLE_SPEED: 380,
+
+  BALL_R: 7,
+  BALL_SPEED_INIT: 320,
+  BALL_SPEED_INC:  14,
+  BALL_SPEED_MAX:  680,
+
+  WIN_SCORE: 7,
+  SERVE_DELAY_MS: 2200,
+
+  BONUS_ZONE_R: 22,
+  BONUS_ZONE_TIMEOUT:  12000,
+  BONUS_SPAWN_DELAY:    7000,
+  BONUS_MOVE_SPEED:     150,
+  BONUS_MOVE_TIMEOUT:   5000,
+
+  BUMPER_R: 18,
+  BUMPER_DURATION: 10000,
+
+  BONUS_DURATION: { BIG: 8000, TINY: 7000, FREEZE: 3000, CURVE: 8000 },
+
+  BONUS_TYPES: ['TURBO','BIG','TINY','SPLIT','CURVE','GHOST','FREEZE','BUMPER'],
+
+  BONUS_COLOR: {
+    TURBO:  '#FF5500',
+    BIG:    '#44EE44',
+    TINY:   '#AA44FF',
+    SPLIT:  '#FFEE00',
+    CURVE:  '#00FFFF',
+    GHOST:  '#CCCCCC',
+    FREEZE: '#44AAFF',
+    BUMPER: '#FF44AA',
+  },
+
+  COLOR: {
+    BG:        '#030308',
+    P1:        '#CC4400',
+    P2:        '#1A5FA0',
+    BALL:      '#FFD700',
+    CENTER:    'rgba(255,255,255,0.12)',
+    SCORE_BG:  'rgba(255,255,255,0.07)',
+  },
+};

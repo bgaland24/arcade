@@ -21,17 +21,22 @@
   <!-- Écran d'accueil -->
   <div id="welcome-screen" class="overlay">
     <div class="panel">
+      <a href="/lobby" class="back-link">&#9664; ACCUEIL</a>
       <h1 class="game-title">PLAY<span>TANK</span></h1>
       <p class="subtitle">JEU DE TANKS &bull; 2 JOUEURS</p>
       <hr class="divider">
 
       <div class="player-row p1-row">
         <span class="player-tag p1-tag">P1</span>
-        <input id="p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false">
+        <input id="p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false"
+               value="{{ session.p1.name if session.p1 else '' }}"
+               {% if session.p1 %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <div class="player-row p2-row">
         <span class="player-tag p2-tag">P2</span>
-        <input id="p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false">
+        <input id="p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false"
+               value="{{ session.p2.name if session.p2 else '' }}"
+               {% if session.p2 %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
 
       <button id="start-btn" class="big-btn">JOUER &#9658;</button>
@@ -65,7 +70,7 @@
       <div id="leaderboard"></div>
       <div class="end-buttons">
         <button id="replay-btn" class="big-btn secondary-btn">&#9664; REJOUER</button>
-        <button id="menu-btn"   class="big-btn">MENU &#8962;</button>
+        <button id="menu-btn"   class="big-btn">RETOUR AU LOBBY &#8962;</button>
       </div>
     </div>
   </div>

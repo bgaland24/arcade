@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from core.migrations import run_pending
 
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'database.db')
 
@@ -33,6 +34,13 @@ def init_db():
                 name TEXT NOT NULL
             )
         ''')
+        # Migration : supprimer l'ancien schéma scores si game_id est absent
+        _cols = {r[1] for r in conn.execute("PRAGMA table_info(scores)").fetchall()}
+        if _cols and 'game_id' not in _cols:
+            conn.execute('DROP TABLE scores')
+        # Supprimer les tables per-jeu obsolètes
+        conn.execute('DROP TABLE IF EXISTS galaxy_scores')
+
         # Table scores unifiée — meta contient les champs spécifiques au jeu (JSON)
         conn.execute('''
             CREATE TABLE IF NOT EXISTS scores (
@@ -46,5 +54,7 @@ def init_db():
         # Jeux connus — INSERT OR IGNORE pour ne pas écraser lors des rechargements
         conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('playtank', 'PlayTank')")
         conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('galaxy', 'Galaxy Space Attack')")
+        conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('pongpong', 'PongPong')")
         for fn in _db_setup_funcs:
             fn(conn)
+        run_pending(conn)

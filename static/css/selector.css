@@ -28,6 +28,13 @@
   gap: 32px;
   justify-content: center;
   flex-wrap: wrap;
+  align-items: flex-start;
+}
+.game-card-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 280px;
 }
 .game-card {
   display: flex;
@@ -35,8 +42,8 @@
   align-items: center;
   background: linear-gradient(160deg, #1a1208 0%, #080604 100%);
   border: 2px solid #333;
+  border-bottom: none;
   padding: 28px 32px 24px;
-  width: 280px;
   text-decoration: none;
   color: inherit;
   transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
@@ -110,8 +117,60 @@
 .galaxy-card:hover .galaxy-btn {
   background: rgba(0,238,255,0.1);
 }
+.pong-card:hover {
+  border-color: #00CC88;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,204,136,0.25);
+}
+.pong-card .card-art { background: #00080a; }
+.pong-title   { color: #00CC88; }
+.pong-title span { color: #FFD700; }
+.pong-btn {
+  color: #00CC88;
+  border-color: #00CC88;
+}
+.pong-card:hover .pong-btn {
+  background: rgba(0,204,136,0.12);
+}
+/* ── Scores sous les cartes ──────────────────────────────── */
+.card-scores {
+  background: #05050a;
+  border: 2px solid #333;
+  border-top: 1px solid #222;
+  padding: 10px 12px 12px;
+}
+.card-scores-title {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: #444;
+  margin-bottom: 6px;
+  text-align: center;
+}
+.card-scores-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+.card-scores-table tr + tr td { border-top: 1px solid #111; }
+.card-scores-table td { padding: 3px 4px; }
+.cs-rank  { color: #444; width: 18px; text-align: right; padding-right: 8px; }
+.cs-name  { color: #888; }
+.cs-score { color: #666; text-align: right; font-variant-numeric: tabular-nums; padding: 3px 8px; }
+.cs-date  { color: #383838; text-align: right; font-size: 9px; white-space: nowrap; }
+.card-scores-empty {
+  font-size: 9px; letter-spacing: 2px; color: #333;
+  text-align: center; padding: 10px;
+}
+
+/* Bordure de la zone scores assortie au jeu */
+.game-card-wrap:has(.tank-card)   .card-scores { border-color: #333; }
+.game-card-wrap:has(.tank-card:hover)   .card-scores { border-color: #CC4400; }
+.game-card-wrap:has(.galaxy-card:hover) .card-scores { border-color: #22AAFF; }
+.game-card-wrap:has(.pong-card:hover)   .card-scores { border-color: #00CC88; }
+
 @media (max-width: 640px) {
   .selector-title { font-size: 36px; }
   .game-cards { gap: 20px; }
-  .game-card { width: 240px; padding: 20px; }
+  .game-card-wrap { width: 240px; }
+  .game-card { padding: 20px; }
 }

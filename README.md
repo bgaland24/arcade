@@ -1,4 +1,4 @@
-# Arcade — PlayTank & Galaxy Space Attack
+# Arcade — PlayTank, Galaxy Space Attack & PongPong
 
 Plateforme arcade multi-jeux, jouable sur ordinateur et mobile (paysage).
 
@@ -27,6 +27,28 @@ Shoot'em up coopératif 2 joueurs.
 | Se déplacer | `W` `A` `S` `D` | `↑` `←` `↓` `→` |
 | Tir | automatique | automatique |
 | Bombe | `Espace` | `Entrée` |
+
+Sur mobile (paysage) : boutons tactiles affichés à l'écran.
+
+### PongPong
+Pong enrichi de bonus dynamiques, 2 joueurs en duel.
+- Premier à **7 points** (paramétrable dans `pp-config.js`)
+- Zones bonus apparaissent sur le terrain : la balle les déclenche, le bonus dérive vers le bord du camp → attraper avec la raquette pour activer
+
+| Bonus | Effet |
+|-------|-------|
+| TURBO | Prochain renvoi à 2× vitesse |
+| BIG | Raquette agrandie 8s |
+| TINY | Raquette adverse réduite 7s |
+| SPLIT | Duplique la balle |
+| CURVE | Renvois courbés 8s |
+| GHOST | Balle invisible 2s au prochain renvoi |
+| FREEZE | Adversaire ralenti 3s |
+| BUMPER | 2 obstacles au centre 10s |
+
+| Action | Joueur 1 | Joueur 2 |
+|--------|----------|----------|
+| Monter / Descendre | `W` / `S` | `↑` / `↓` |
 
 Sur mobile (paysage) : boutons tactiles affichés à l'écran.
 
@@ -140,23 +162,30 @@ playtank/
 ├── requirements.txt
 ├── database.db                 # Généré automatiquement
 ├── core/
-│   └── db.py                   # get_db(), init_db(), register_db_setup()
+│   ├── db.py                   # get_db(), init_db(), register_db_setup()
+│   └── scores.py               # save_score(game_id, score, meta) / get_scores(game_id)
 ├── games/
 │   ├── registry.py             # Liste des jeux pour le sélecteur
 │   ├── playtank/__init__.py    # Blueprint PlayTank
-│   └── galaxy/__init__.py      # Blueprint Galaxy
+│   ├── galaxy/__init__.py      # Blueprint Galaxy
+│   └── pongpong/__init__.py    # Blueprint PongPong
 ├── templates/
 │   ├── index.html              # Sélecteur de jeux (dynamique)
 │   ├── playtank/game.html
-│   └── galaxy/game.html
+│   ├── galaxy/game.html
+│   └── pongpong/game.html
 └── static/
-    ├── css/selector.css        # Styles du sélecteur (partagé)
+    ├── css/selector.css        # Styles du sélecteur (partagé, variantes par jeu)
     ├── playtank/
     │   ├── css/style.css
     │   └── js/                 # config, terrain, tank, projectile, input, ui, game
-    └── galaxy/
-        ├── css/galaxy.css
-        └── js/                 # gx-config … gx-game (12 fichiers)
+    ├── galaxy/
+    │   ├── css/galaxy.css
+    │   └── js/                 # gx-config … gx-game (12 fichiers)
+    └── pongpong/
+        ├── css/pong.css
+        └── js/                 # pp-config, pp-input, pp-ball, pp-paddle,
+                                #   pp-bonus, pp-hud, pp-ui, pp-game
 ```
 
 ## Paramètres réglables
@@ -179,3 +208,14 @@ playtank/
 | `POWERUP_DROP_CHANCE` | `0.9` | Probabilité de drop |
 | `POWERUP_WEIGHTS` | voir fichier | Poids de chaque type de power-up |
 | `SLOW_FACTOR` | `0.35` | Multiplicateur vitesse ennemis sous SLOW |
+
+**PongPong** : [`static/pongpong/js/pp-config.js`](static/pongpong/js/pp-config.js)
+
+| Paramètre | Défaut | Description |
+|-----------|--------|-------------|
+| `WIN_SCORE` | `7` | Points pour gagner |
+| `PADDLE_SPEED` | `380` | Vitesse raquette (px/s) |
+| `BALL_SPEED_INIT` | `320` | Vitesse initiale balle (px/s) |
+| `BALL_SPEED_MAX` | `680` | Vitesse maximale balle (px/s) |
+| `BONUS_SPAWN_DELAY` | `7000` | Délai entre deux zones bonus (ms) |
+| `BONUS_ZONE_TIMEOUT` | `12000` | Durée d'une zone avant disparition (ms) |

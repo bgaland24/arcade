@@ -17,17 +17,21 @@ core/
 games/
   registry.py               → liste des jeux pour le sélecteur (titre, url, SVG, couleurs)
   playtank/__init__.py       → Blueprint PlayTank : routes /playtank + /api/playtank/scores
-  galaxy/__init__.py         → Blueprint Galaxy  : routes /galaxy  + /api/galaxy/scores
+  galaxy/__init__.py         → Blueprint Galaxy   : routes /galaxy   + /api/galaxy/scores
+  pongpong/__init__.py       → Blueprint PongPong : routes /pongpong + /api/pongpong/scores
 templates/
   index.html                → sélecteur dynamique (boucle Jinja sur registry.GAMES)
   playtank/game.html        → page PlayTank
   galaxy/game.html          → page Galaxy
+  pongpong/game.html        → page PongPong
 static/
-  css/selector.css          → styles du sélecteur (partagé)
+  css/selector.css          → styles du sélecteur (partagé, inclut les variantes de carte)
   playtank/css/style.css
   playtank/js/              → config, terrain, tank, projectile, input, ui, game
   galaxy/css/galaxy.css
   galaxy/js/                → gx-config … gx-game (12 fichiers)
+  pongpong/css/pong.css
+  pongpong/js/              → pp-config, pp-input, pp-ball, pp-paddle, pp-bonus, pp-hud, pp-ui, pp-game
 ```
 
 ## Ajouter un nouveau jeu
@@ -119,6 +123,31 @@ Ne pas ralentir les vaisseaux joueurs ni le HUD.
 ### Ordre de chargement scripts Galaxy
 gx-config → gx-input → gx-particles → gx-bullet → gx-powerup →
 gx-player → gx-enemy → gx-boss → gx-wave → gx-hud → gx-ui → gx-game
+
+## PongPong — spécificités
+
+Paramètres réglables : `static/pongpong/js/pp-config.js`
+
+### Mécanique bonus
+1. Une `PPBonusZone` (cercle pulsant) apparaît à une position aléatoire sur le terrain.
+2. Quand la balle la touche, elle devient un `PPMovingBonus` qui dérive horizontalement vers le bord du camp où elle se trouvait (gauche si x < 400, droite si x > 400).
+3. Le joueur attrape le bonus en positionnant sa raquette au niveau Y du bonus.
+4. Chaque joueur ne peut avoir qu'un seul bonus actif à la fois.
+
+### Bonus disponibles
+| Bonus | Effet |
+|-------|-------|
+| TURBO | Prochain renvoi à 2× vitesse (consommé au 1er hit) |
+| BIG | Raquette 1,9× plus haute pendant 8s |
+| TINY | Raquette adverse réduite à 0,5× pendant 7s |
+| SPLIT | Duplique la balle immédiatement |
+| CURVE | Chaque renvoi courbe la balle (actif 8s) |
+| GHOST | Prochain renvoi rend la balle invisible 2s |
+| FREEZE | Raquette adverse ralentie à 30% pendant 3s |
+| BUMPER | 2 obstacles circulaires apparaissent au centre (10s) |
+
+### Ordre de chargement scripts PongPong
+pp-config → pp-input → pp-ball → pp-paddle → pp-bonus → pp-hud → pp-ui → pp-game
 
 ## Déploiement PythonAnywhere
 

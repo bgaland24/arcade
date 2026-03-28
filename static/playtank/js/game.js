@@ -77,11 +77,7 @@ function replayGame() {
 }
 
 function goToMenu() {
-  gameState = 'idle';
-  if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-  hideGameOverScreen();
-  document.getElementById('welcome-screen').style.display = 'flex';
-  drawIdleBackground();
+  window.location.href = '/lobby';
 }
 
 // ── Initialisation d'une partie ───────────────────────────
@@ -237,27 +233,29 @@ function endGame(winnerIdx) {
   const winnerName  = winnerIdx >= 0 ? [p1name, p2name][winnerIdx] : '';
   const winnerTank  = winnerIdx >= 0 ? tanks[winnerIdx] : null;
 
-  // Poster le score du vainqueur
-  if (winnerTank) {
-    fetch('/api/playtank/scores', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        player_name:  winnerName,
-        time_seconds: timeUsed,
-        shots_fired:  winnerTank.shotsFired,
-        shots_hit:    winnerTank.shotsHit,
-      }),
-    }).catch(() => {});  // silencieux si offline
-  }
+  // Poster le score du vainqueur puis récupérer le classement
+  const postScore = winnerTank
+    ? fetch('/api/playtank/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          player_name:   winnerName,
+          opponent_name: winnerIdx === 0 ? p2name : p1name,
+          time_seconds:  timeUsed,
+          shots_fired:   winnerTank.shotsFired,
+          shots_hit:     winnerTank.shotsHit,
+        }),
+      }).catch(() => {})
+    : Promise.resolve();
 
-  // Récupérer le classement puis afficher
-  fetch('/api/playtank/scores')
-    .then(r => r.json())
-    .catch(() => [])
-    .then(scores => {
-      showGameOverScreen(winnerName, winnerIdx, tanks, timeUsed, scores);
-    });
+  postScore.finally(() => {
+    fetch('/api/playtank/scores')
+      .then(r => r.json())
+      .catch(() => [])
+      .then(scores => {
+        showGameOverScreen(winnerName, winnerIdx, tanks, timeUsed, scores);
+      });
+  });
 }
 
 // ── Rendu ─────────────────────────────────────────────────

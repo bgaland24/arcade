@@ -88,6 +88,12 @@ class TestPlaytankPage:
                        'projectile.js', 'input.js', 'ui.js', 'game.js']:
             assert script in html, f"Script manquant : {script}"
 
+    def test_player_names_prefilled_from_session(self, client):
+        _identify(client)
+        html = client.get('/playtank').data.decode()
+        assert 'value="Alice"' in html
+        assert 'value="Bob"' in html
+
 
 class TestGalaxyPage:
     def test_page_returns_200(self, client):
@@ -103,3 +109,9 @@ class TestGalaxyPage:
                        'gx-enemy.js', 'gx-boss.js', 'gx-wave.js',
                        'gx-hud.js', 'gx-ui.js', 'gx-game.js']:
             assert script in html, f"Script manquant : {script}"
+
+    def test_player_names_prefilled_from_session(self, client):
+        _identify(client)
+        html = client.get('/galaxy').data.decode()
+        assert 'value="Alice"' in html
+        assert 'value="Bob"' in html

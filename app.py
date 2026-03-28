@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from core.db import init_db, get_db  # noqa: F401 — init_db ré-exporté pour wsgi.py
 from games.playtank import blueprint as playtank_bp
 from games.galaxy import blueprint as galaxy_bp
+from games.pongpong import blueprint as pongpong_bp
 from datetime import datetime, timezone
 
 app = Flask(__name__)
@@ -9,6 +10,7 @@ app.secret_key = 'arcade-secret-key-change-in-prod'
 
 app.register_blueprint(playtank_bp)
 app.register_blueprint(galaxy_bp)
+app.register_blueprint(pongpong_bp)
 
 
 # ── Identification ───────────────────────────────────────
@@ -89,8 +91,29 @@ def lobby():
     if 'p1' not in session or 'p2' not in session:
         return redirect(url_for('identify'))
     from games.registry import GAMES
+    from core.scores import get_scores
+
+    def _normalize(entry, game_id):
+        if game_id == 'galaxy':
+            players = f"{entry.get('p1_name', '?')} & {entry.get('p2_name', '?')}"
+        elif game_id == 'pongpong':
+            players = f"{entry.get('player_name', '?')} vs {entry.get('opponent_name', '?')}"
+        else:  # playtank
+            opponent = entry.get('opponent_name', '')
+            players = f"{entry.get('player_name', '?')} vs {opponent}" if opponent else entry.get('player_name', '?')
+        return {
+            'score':   entry['score'],
+            'players': players,
+            'date':    entry.get('created_at', '')[:10],
+        }
+
+    scores_by_game = {
+        g['id']: [_normalize(s, g['id']) for s in get_scores(g['id'], limit=10)]
+        for g in GAMES
+    }
     return render_template('index.html',
                            games=GAMES,
+                           scores_by_game=scores_by_game,
                            p1=session['p1'],
                            p2=session['p2'])
 

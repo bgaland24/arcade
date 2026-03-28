@@ -70,12 +70,32 @@
     <p class="selector-subtitle">CHOISISSEZ VOTRE JEU</p>
     <div class="game-cards">
       {% for game in games %}
-      <a href="{{ game.url }}" class="game-card {{ game.card_class }}">
-        <div class="card-art">{{ game.svg | safe }}</div>
-        <h2 class="card-title {{ game.title_class }}">{{ game.title_html | safe }}</h2>
-        <p class="card-desc">{{ game.desc | safe }}</p>
-        <div class="card-btn {{ game.btn_class }}">JOUER &#9658;</div>
-      </a>
+      <div class="game-card-wrap">
+        <a href="{{ game.url }}" class="game-card {{ game.card_class }}">
+          <div class="card-art">{{ game.svg | safe }}</div>
+          <h2 class="card-title {{ game.title_class }}">{{ game.title_html | safe }}</h2>
+          <p class="card-desc">{{ game.desc | safe }}</p>
+          <div class="card-btn {{ game.btn_class }}">JOUER &#9658;</div>
+        </a>
+        {% set top = scores_by_game[game.id] %}
+        {% if top %}
+        <div class="card-scores">
+          <div class="card-scores-title">TOP 10</div>
+          <table class="card-scores-table">
+            {% for s in top %}
+            <tr>
+              <td class="cs-rank">{{ loop.index }}</td>
+              <td class="cs-name">{{ s.players }}</td>
+              <td class="cs-score">{{ s.score }}</td>
+              <td class="cs-date">{{ s.date }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        {% else %}
+        <div class="card-scores card-scores-empty">Aucun score</div>
+        {% endif %}
+      </div>
       {% endfor %}
     </div>
   </div>

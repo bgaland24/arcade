@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>PongPong</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='pongpong/css/pong.css') }}">
+</head>
+<body>
+
+  <div id="portrait-warning">
+    <div class="pw-box">
+      <div class="pw-icon">&#8635;</div>
+      <p>Tournez votre appareil</p>
+      <p>en mode <strong>paysage</strong></p>
+    </div>
+  </div>
+
+  <!-- Welcome screen -->
+  <div id="pp-welcome" class="pp-overlay">
+    <div class="pp-panel">
+      <a href="/lobby" class="back-link">&#9664; ACCUEIL</a>
+      <h1 class="pp-title">PONG<span>PONG</span></h1>
+      <p class="pp-subtitle">DUEL PONG &bull; 2 JOUEURS &bull; BONUS</p>
+      <hr class="pp-divider">
+
+      <div class="player-row pp-p1-row">
+        <span class="player-tag pp-p1-tag">P1</span>
+        <input id="pp-p1name" type="text" maxlength="12" placeholder="Joueur 1"
+               autocomplete="off" spellcheck="false"
+               value="{{ session.p1.name if session.p1 else '' }}"
+               {% if session.p1 %}readonly style="opacity:.7;cursor:default"{% endif %}>
+      </div>
+      <div class="player-row pp-p2-row">
+        <span class="player-tag pp-p2-tag">P2</span>
+        <input id="pp-p2name" type="text" maxlength="12" placeholder="Joueur 2"
+               autocomplete="off" spellcheck="false"
+               value="{{ session.p2.name if session.p2 else '' }}"
+               {% if session.p2 %}readonly style="opacity:.7;cursor:default"{% endif %}>
+      </div>
+
+      <button id="pp-start-btn" class="pp-btn">JOUER &#9658;</button>
+
+      <div class="pp-controls-grid">
+        <div class="pp-ctrl-col">
+          <strong class="pp-p1-col">JOUEUR 1</strong>
+          <span>W / S &mdash; monter / descendre</span>
+        </div>
+        <div class="pp-ctrl-sep"></div>
+        <div class="pp-ctrl-col">
+          <strong class="pp-p2-col">JOUEUR 2</strong>
+          <span>&#8593; / &#8595; &mdash; monter / descendre</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game over screen -->
+  <div id="pp-gameover" class="pp-overlay" style="display:none">
+    <div class="pp-panel pp-wide-panel">
+      <div id="pp-winner-banner" class="pp-winner-banner"></div>
+      <div id="pp-stats"></div>
+      <hr class="pp-divider">
+      <h3 class="pp-lb-title">MEILLEURS SCORES</h3>
+      <div id="pp-leaderboard"></div>
+      <div class="pp-end-buttons">
+        <button id="pp-replay-btn" class="pp-btn-secondary">&#9664; REJOUER</button>
+        <button id="pp-lobby-btn"  class="pp-btn-secondary">RETOUR AU LOBBY &#8962;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game canvas -->
+  <div id="game-container">
+    <canvas id="pp-canvas" width="800" height="450"></canvas>
+    <div id="pp-touch-p1">
+      <button id="pp-p1-up">&#9650;</button>
+      <button id="pp-p1-down">&#9660;</button>
+    </div>
+    <div id="pp-touch-p2">
+      <button id="pp-p2-up">&#9650;</button>
+      <button id="pp-p2-down">&#9660;</button>
+    </div>
+  </div>
+
+  <!-- Scripts (ordre important) -->
+  <script src="{{ url_for('static', filename='pongpong/js/pp-config.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-input.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-ball.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-paddle.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-bonus.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-hud.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='pongpong/js/pp-game.js') }}"></script>
+</body>
+</html>

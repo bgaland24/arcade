@@ -58,4 +58,25 @@ GAMES = [
             <rect x="54" y="33" width="2" height="4"  fill="#22AAFF"/>
         </svg>''',
     },
+    {
+        'id':    'pongpong',
+        'name':  'PongPong',
+        'title_html': 'PONG<span>PONG</span>',
+        'desc':  'Duel Pong &bull; 2 joueurs &bull; Bonus dynamiques',
+        'url':   '/pongpong',
+        'color': '#00CC88',
+        'accent':'#00FFAA',
+        'card_class': 'pong-card',
+        'btn_class':  'pong-btn',
+        'title_class':'pong-title',
+        'svg': '''<svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="80" height="50" fill="#030308"/>
+            <line x1="40" y1="2" x2="40" y2="48" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <rect x="5"  y="14" width="5" height="22" fill="#CC4400" rx="1"/>
+            <rect x="70" y="14" width="5" height="22" fill="#1A5FA0" rx="1"/>
+            <circle cx="40" cy="25" r="5" fill="#FFD700"/>
+            <circle cx="27" cy="32" r="6" fill="none" stroke="#00CC88" stroke-width="1.5"/>
+            <circle cx="27" cy="32" r="1.5" fill="#00CC88"/>
+        </svg>''',
+    },
 ]
