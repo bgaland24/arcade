@@ -70,10 +70,10 @@ python app.py
 
 ## Déploiement PythonAnywhere
 
-1. Uploader le projet dans `~/playtank/`
+1. Uploader le projet dans `~/arcade/`
 2. Tableau de bord PythonAnywhere → **Web** → nouvelle app WSGI
 3. Modifier `wsgi.py` : remplacer `<VOTRE_USERNAME>` par votre nom d'utilisateur
-4. Pointer le fichier WSGI vers `~/playtank/wsgi.py`
+4. Pointer le fichier WSGI vers `~/arcade/wsgi.py`
 5. Recharger l'application
 
 ---
