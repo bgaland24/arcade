@@ -147,6 +147,21 @@
 .racer-card:hover .racer-btn {
   background: rgba(255,102,204,0.12);
 }
+.crew-card:hover {
+  border-color: #00DDAA;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,221,170,0.28);
+}
+.crew-card .card-art { background: #021a14; }
+.crew-title      { color: #00DDAA; }
+.crew-title span { color: #FFAA00; }
+.crew-btn {
+  color: #00DDAA;
+  border-color: #00DDAA;
+}
+.crew-card:hover .crew-btn {
+  background: rgba(0,221,170,0.12);
+}
 /* ── Scores sous les cartes ──────────────────────────────── */
 .card-scores {
   background: #05050a;
@@ -183,6 +198,7 @@
 .game-card-wrap:has(.galaxy-card:hover) .card-scores { border-color: #22AAFF; }
 .game-card-wrap:has(.pong-card:hover)   .card-scores { border-color: #00CC88; }
 .game-card-wrap:has(.racer-card:hover)  .card-scores { border-color: #FF00AA; }
+.game-card-wrap:has(.crew-card:hover)   .card-scores { border-color: #00DDAA; }
 
 @media (max-width: 640px) {
   .selector-title { font-size: 36px; }
