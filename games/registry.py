@@ -111,4 +111,34 @@ GAMES = [
             <rect x="54" y="34" width="2" height="4"  fill="#AADDFF"/>
         </svg>''',
     },
+    {
+        'id':    'starcrew',
+        'name':  'StarCrew',
+        'title_html': 'STAR<span>CREW</span>',
+        'desc':  'Coop 2 joueurs &bull; Pilote + Artilleur &bull; Grapin &amp; metal',
+        'url':   '/starcrew',
+        'color': '#00DDAA',
+        'accent':'#FFAA00',
+        'card_class': 'crew-card',
+        'btn_class':  'crew-btn',
+        'title_class':'crew-title',
+        'svg': '''<svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="80" height="50" fill="#021a14"/>
+            <rect x="8"  y="6"  width="1" height="1" fill="white" opacity="0.7"/>
+            <rect x="66" y="4"  width="1" height="1" fill="white" opacity="0.9"/>
+            <rect x="30" y="3"  width="1" height="1" fill="white" opacity="0.5"/>
+            <rect x="72" y="18" width="1" height="1" fill="white" opacity="0.7"/>
+            <rect x="4"  y="22" width="1" height="1" fill="white" opacity="0.6"/>
+            <circle cx="22" cy="10" r="3" fill="#888" stroke="#444" stroke-width="0.5"/>
+            <circle cx="58" cy="12" r="4" fill="#FFAA00" stroke="#AA7700" stroke-width="0.5"/>
+            <polygon points="34,30 46,30 50,36 46,44 34,44 30,36" fill="#00DDAA"/>
+            <rect x="36" y="32" width="8" height="6" fill="#FFAA00"/>
+            <rect x="38" y="34" width="4" height="2" fill="#FFFFFF"/>
+            <line x1="40" y1="30" x2="40" y2="22" stroke="#00DDAA" stroke-width="1.5"/>
+            <rect x="38" y="20" width="4" height="4" fill="#00DDAA"/>
+            <line x1="44" y1="36" x2="52" y2="28" stroke="#FFAA00" stroke-width="0.8" stroke-dasharray="2,1"/>
+            <rect x="30" y="43" width="3" height="4" fill="#FF6622"/>
+            <rect x="47" y="43" width="3" height="4" fill="#22AAFF"/>
+        </svg>''',
+    },
 ]

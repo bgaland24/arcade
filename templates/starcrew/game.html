@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>StarCrew</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='starcrew/css/starcrew.css') }}">
+</head>
+<body>
+
+  <div id="portrait-warning">
+    <div class="pw-box">
+      <div class="pw-icon">&#8635;</div>
+      <p>Tournez votre appareil</p>
+      <p>en mode <strong>paysage</strong></p>
+    </div>
+  </div>
+
+  <!-- Welcome screen -->
+  <div id="crew-welcome" class="sc-overlay">
+    <div class="sc-panel">
+      <a href="/" class="back-link">&#9664; ACCUEIL</a>
+      <h1 class="sc-title">STAR<span>CREW</span></h1>
+      <p class="sc-subtitle">COOP 2 JOUEURS &bull; PILOTE + ARTILLEUR</p>
+      <hr class="sc-divider">
+      <div class="player-row sc-p1-row">
+        <span class="player-tag sc-p1-tag">P1</span>
+        <input id="sc-p1name" type="text" maxlength="12" placeholder="Pilote" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="player-row sc-p2-row">
+        <span class="player-tag sc-p2-tag">P2</span>
+        <input id="sc-p2name" type="text" maxlength="12" placeholder="Artilleur" autocomplete="off" spellcheck="false">
+      </div>
+      <button id="sc-start-btn" class="sc-btn">JOUER &#9658;</button>
+      <div class="sc-controls-grid">
+        <div class="ctrl-col">
+          <strong class="sc-p1-col">PILOTE</strong>
+          <span>WASD &mdash; deplacer</span>
+          <span>Canon auto vers le haut</span>
+        </div>
+        <div class="ctrl-sep"></div>
+        <div class="ctrl-col">
+          <strong class="sc-p2-col">ARTILLEUR</strong>
+          <span>&#8592; / &#8594; &mdash; rotation tourelle</span>
+          <span>&#8593; &mdash; tirer 2 lasers (chauffe)</span>
+          <span>&#8595; &mdash; lancer le grapin</span>
+          <span>ENTREE &mdash; acheter au shop</span>
+        </div>
+      </div>
+      <p class="touch-note">Conseil : surveillez la chaleur. Au rouge, lasers percants !</p>
+    </div>
+  </div>
+
+  <!-- Shop inter-wave -->
+  <div id="crew-shop" class="sc-overlay" style="display:none">
+    <div class="sc-panel">
+      <h2 class="sc-shop-title">SHOP</h2>
+      <p class="sc-shop-sub">Vague terminee. Choisissez un bonus puis ENTREE.</p>
+      <div class="sc-shop-meta">
+        METAL : <b id="sc-shop-metal">0</b>
+        &nbsp;&bull;&nbsp; PROCHAINE VAGUE : <b id="sc-shop-wave">-</b>
+      </div>
+      <hr class="sc-divider">
+      <div id="sc-shop-items" class="sc-shop-items"></div>
+      <div class="sc-shop-hint">
+        <span class="sc-p1-col">A / D</span> ou <span class="sc-p2-col">&#8592; / &#8594;</span>
+        : selection &nbsp;&bull;&nbsp;
+        <span class="sc-p2-col">ENTREE</span> : acheter &nbsp;&bull;&nbsp;
+        <span>ECHAP</span> : passer
+      </div>
+      <div class="sc-shop-timer">Demarrage auto dans <span id="sc-shop-countdown">6</span> s</div>
+    </div>
+  </div>
+
+  <!-- Game over screen -->
+  <div id="crew-gameover" class="sc-overlay" style="display:none">
+    <div class="sc-panel sc-wide-panel">
+      <div id="sc-result-banner"></div>
+      <div id="sc-result-stats"></div>
+      <hr class="sc-divider">
+      <h3 class="sc-lb-title">MEILLEURS SCORES</h3>
+      <div id="sc-leaderboard"></div>
+      <div class="sc-end-buttons">
+        <button id="sc-replay-btn" class="sc-btn sc-secondary-btn">&#9664; REJOUER</button>
+        <a href="/" class="sc-btn sc-menu-link">MENU &#8962;</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <canvas id="scCanvas"></canvas>
+  </div>
+
+  <!-- Script load order is critical -->
+  <script src="{{ url_for('static', filename='starcrew/js/sc-config.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-input.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-particles.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-bullet.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-asteroid.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-grapple.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-turret.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-ship.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-enemy.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-wave.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-events.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-shop.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-hud.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='starcrew/js/sc-game.js') }}"></script>
+</body>
+</html>
