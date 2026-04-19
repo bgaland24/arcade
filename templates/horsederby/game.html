@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Horse Derby</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='horsederby/css/derby.css') }}">
+</head>
+<body>
+
+  <div id="portrait-warning">
+    <div class="pw-box">
+      <div class="pw-icon">&#8635;</div>
+      <p>Tournez votre appareil</p>
+      <p>en mode <strong>paysage</strong></p>
+    </div>
+  </div>
+
+  <!-- Welcome screen -->
+  <div id="derby-welcome" class="drb-overlay">
+    <div class="drb-panel">
+      <a href="/" class="back-link">&#9664; ACCUEIL</a>
+      <h1 class="drb-title">HORSE<span>DERBY</span></h1>
+      <p class="drb-subtitle">COURSE RYTHMIQUE &bull; 2 JOUEURS &bull; ORAGE</p>
+      <hr class="drb-divider">
+      <div class="player-row drb-p1-row">
+        <span class="player-tag drb-p1-tag">P1</span>
+        <input id="drb-p1name" type="text" maxlength="12" placeholder="Cavalier 1" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="player-row drb-p2-row">
+        <span class="player-tag drb-p2-tag">P2</span>
+        <input id="drb-p2name" type="text" maxlength="12" placeholder="Cavaliere 2" autocomplete="off" spellcheck="false">
+      </div>
+      <button id="drb-start-btn" class="drb-btn">JOUER &#9658;</button>
+      <div class="drb-controls-grid">
+        <div class="ctrl-col">
+          <strong class="drb-p1-col">CAVALIER 1</strong>
+          <span>A &harr; D &mdash; galoper</span>
+          <span>W &mdash; sauter</span>
+        </div>
+        <div class="ctrl-sep"></div>
+        <div class="ctrl-col">
+          <strong class="drb-p2-col">CAVALIER 2</strong>
+          <span>&#8592; &harr; &#8594; &mdash; galoper</span>
+          <span>&#8593; &mdash; sauter</span>
+        </div>
+      </div>
+      <p class="touch-note">L'orage arrive par la gauche. Ne vous faites pas rattraper !</p>
+    </div>
+  </div>
+
+  <!-- Game over screen -->
+  <div id="derby-gameover" class="drb-overlay" style="display:none">
+    <div class="drb-panel drb-wide-panel">
+      <div id="drb-result-banner"></div>
+      <div id="drb-result-stats"></div>
+      <hr class="drb-divider">
+      <h3 class="drb-lb-title">MEILLEURS SCORES</h3>
+      <div id="drb-leaderboard"></div>
+      <div class="drb-end-buttons">
+        <button id="drb-replay-btn" class="drb-btn drb-secondary-btn">&#9664; REJOUER</button>
+        <a href="/" class="drb-btn drb-menu-link">MENU &#8962;</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <canvas id="derbyCanvas"></canvas>
+  </div>
+
+  <!-- Script load order is critical -->
+  <script src="{{ url_for('static', filename='horsederby/js/derby-config.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-input.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-particles.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-horse.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-obstacle.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-storm.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-hud.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='horsederby/js/derby-game.js') }}"></script>
+</body>
+</html>
