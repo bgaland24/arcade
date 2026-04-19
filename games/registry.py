@@ -79,4 +79,36 @@ GAMES = [
             <circle cx="27" cy="32" r="1.5" fill="#00CC88"/>
         </svg>''',
     },
+    {
+        'id':    'galaxyracer',
+        'name':  'Galaxy Racer',
+        'title_html': 'GALAXY<br><span>RACER</span>',
+        'desc':  'Course spatiale &bull; 2 joueurs &bull; Esquive d\'asteroides',
+        'url':   '/galaxyracer',
+        'color': '#FF00AA',
+        'accent':'#FF66CC',
+        'card_class': 'racer-card',
+        'btn_class':  'racer-btn',
+        'title_class':'racer-title',
+        'svg': '''<svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="80" height="50" fill="#07001a"/>
+            <rect x="12" y="4"  width="1" height="1" fill="white" opacity="0.8"/>
+            <rect x="60" y="8"  width="1" height="1" fill="white" opacity="0.6"/>
+            <rect x="34" y="2"  width="1" height="1" fill="white" opacity="0.7"/>
+            <rect x="68" y="14" width="1" height="1" fill="white" opacity="0.9"/>
+            <rect x="6"  y="18" width="1" height="1" fill="white" opacity="0.5"/>
+            <rect x="46" y="20" width="1" height="1" fill="white" opacity="0.6"/>
+            <polygon points="52,12 58,12 60,16 58,20 52,20 50,16" fill="#FF00AA"/>
+            <polygon points="18,28 26,28 28,32 26,36 18,36 16,32" fill="#663388"/>
+            <polygon points="22,36 22,40 20,43 16,42 16,38" fill="#AA4488"/>
+            <rect x="22" y="38" width="6" height="10" fill="#FF6622"/>
+            <rect x="18" y="42" width="5" height="6"  fill="#CC3300"/>
+            <rect x="27" y="42" width="5" height="6"  fill="#CC3300"/>
+            <rect x="24" y="34" width="2" height="4"  fill="#FFDD55"/>
+            <rect x="52" y="38" width="6" height="10" fill="#22AAFF"/>
+            <rect x="48" y="42" width="5" height="6"  fill="#0055CC"/>
+            <rect x="57" y="42" width="5" height="6"  fill="#0055CC"/>
+            <rect x="54" y="34" width="2" height="4"  fill="#AADDFF"/>
+        </svg>''',
+    },
 ]
