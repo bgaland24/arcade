@@ -147,29 +147,29 @@ class ScShip {
 
     // Corps central (emerald)
     ctx.fillStyle = SC.COLOR.HUD_PRIMARY;
-    ctx.fillRect(x - 10, y - 6, 20, 16);
-    ctx.fillRect(x - 14, y + 2, 28, 8);
+    ctx.fillRect(x - 15, y - 9, 30, 24);
+    ctx.fillRect(x - 21, y + 3, 42, 12);
     // Ailes pilote (orange P1)
     ctx.fillStyle = SC.COLOR.P1;
-    ctx.fillRect(x - 16, y + 4, 4, 8);
+    ctx.fillRect(x - 24, y + 6, 6, 12);
     ctx.fillStyle = SC.COLOR.P2;
-    ctx.fillRect(x + 12, y + 4, 4, 8);
+    ctx.fillRect(x + 18, y + 6, 6, 12);
     // Sommet (cockpit)
     ctx.fillStyle = SC.COLOR.HUD_GOLD;
-    ctx.fillRect(x - 4, y - 12, 8, 7);
+    ctx.fillRect(x - 6, y - 18, 12, 10);
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(x - 2, y - 10, 4, 3);
+    ctx.fillRect(x - 3, y - 15, 6, 4);
     // Base du reacteur
     ctx.fillStyle = SC.COLOR.HUD_PRIMARY;
-    ctx.fillRect(x - 6, y + 10, 12, 2);
+    ctx.fillRect(x - 9, y + 15, 18, 3);
     // Flammes
-    const fl = 4 + Math.abs(Math.sin(performance.now() * 0.03)) * 5;
+    const fl = 6 + Math.abs(Math.sin(performance.now() * 0.03)) * 7;
     ctx.fillStyle = SC.COLOR.HUD_GOLD;
-    ctx.fillRect(x - 4, y + 12, 3, fl);
-    ctx.fillRect(x + 1, y + 12, 3, fl);
+    ctx.fillRect(x - 6, y + 18, 4, fl);
+    ctx.fillRect(x + 2, y + 18, 4, fl);
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(x - 3, y + 12, 1, fl * 0.5);
-    ctx.fillRect(x + 2, y + 12, 1, fl * 0.5);
+    ctx.fillRect(x - 5, y + 18, 2, fl * 0.5);
+    ctx.fillRect(x + 3, y + 18, 2, fl * 0.5);
 
     ctx.globalAlpha = 1;
 

@@ -19,8 +19,8 @@ const SC_KEY_HOLD_MAP = {
   'KeyD':        ['p1', 'right'],
   'ArrowLeft':   ['p2', 'rotL'],
   'ArrowRight':  ['p2', 'rotR'],
-  'ArrowUp':     ['p2', 'fire'],
-  'ArrowDown':   ['p2', 'grapple'],
+  'KeyO':        ['p2', 'fire'],
+  'KeyP':        ['p2', 'grapple'],
 };
 // ces touches sont "edge" (evenement unique) : 'Enter', 'Escape'
 const SC_KEYS_PREVENT = new Set([

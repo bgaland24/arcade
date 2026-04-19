@@ -17,7 +17,10 @@ def calculate_score(kills, waves_completed, metal_collected, shots_fired, shots_
 
 @blueprint.route('/starcrew')
 def game():
-    return render_template('starcrew/game.html')
+    from flask import session
+    return render_template('starcrew/game.html',
+                           p1name=session.get('p1', {}).get('name', ''),
+                           p2name=session.get('p2', {}).get('name', ''))
 
 
 @blueprint.route('/api/starcrew/scores', methods=['GET'])

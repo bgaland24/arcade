@@ -74,9 +74,9 @@ class ScTurret {
     const perpX = -Math.sin(a);
     const perpY =  Math.cos(a);
     const off   = SC.TURRET.LASER_OFFSET;
-    // On tire depuis le canon de la tourelle, a ~18px du centre
-    const muzzleX = shipX + Math.cos(a) * 20;
-    const muzzleY = shipY + Math.sin(a) * 20;
+    // On tire depuis le canon de la tourelle, a ~14px du centre
+    const muzzleX = shipX + Math.cos(a) * 14;
+    const muzzleY = shipY + Math.sin(a) * 14;
 
     const pierce = this.isPiercing();
     bulletPool.firePlayerLaser(muzzleX + perpX * off, muzzleY + perpY * off, a, pierce);
@@ -105,15 +105,15 @@ class ScTurret {
     ctx.rotate(this.angle);
     // Corps cylindrique
     ctx.fillStyle = '#333333';
-    ctx.fillRect(-5, -10, 22, 20);
+    ctx.fillRect(-4, -7, 16, 14);
     ctx.fillStyle = baseColor;
-    ctx.fillRect(12, -3, 10, 6);
+    ctx.fillRect(9, -2, 7, 4);
     ctx.fillStyle = this.isLocked() ? '#222' : baseColor;
-    ctx.fillRect(16, -6, 4, 12);
+    ctx.fillRect(12, -4, 3, 8);
     // 2 sorties de laser
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(20, -SC.TURRET.LASER_OFFSET - 0.5, 3, 1);
-    ctx.fillRect(20,  SC.TURRET.LASER_OFFSET - 0.5, 3, 1);
+    ctx.fillRect(14, -SC.TURRET.LASER_OFFSET - 0.5, 2, 1);
+    ctx.fillRect(14,  SC.TURRET.LASER_OFFSET - 0.5, 2, 1);
     // Fumee si locked
     if (this.isLocked()) {
       ctx.fillStyle = 'rgba(200,200,200,0.5)';
@@ -132,8 +132,8 @@ class ScTurret {
     ctx.beginPath();
     const x2 = shipX + Math.cos(this.angle) * 70;
     const y2 = shipY + Math.sin(this.angle) * 70;
-    ctx.moveTo(shipX + Math.cos(this.angle) * 22,
-               shipY + Math.sin(this.angle) * 22);
+    ctx.moveTo(shipX + Math.cos(this.angle) * 16,
+               shipY + Math.sin(this.angle) * 16);
     ctx.lineTo(x2, y2);
     ctx.stroke();
     ctx.setLineDash([]);

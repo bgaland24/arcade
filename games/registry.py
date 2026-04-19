@@ -141,4 +141,39 @@ GAMES = [
             <rect x="47" y="43" width="3" height="4" fill="#22AAFF"/>
         </svg>''',
     },
+    {
+        'id':    'horsederby',
+        'name':  'Horse Derby',
+        'title_html': 'HORSE<span>DERBY</span>',
+        'desc':  'Course rythmique &bull; 2 joueurs &bull; Orage qui poursuit',
+        'url':   '/horsederby',
+        'color': '#C14E28',
+        'accent':'#F4C430',
+        'card_class': 'derby-card',
+        'btn_class':  'derby-btn',
+        'title_class':'derby-title',
+        'svg': '''<svg viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%"  stop-color="#4a1f3e"/>
+                <stop offset="100%" stop-color="#F4C430"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="80" height="36" fill="url(#sky)"/>
+            <rect x="0" y="36" width="80" height="14" fill="#5B3418"/>
+            <polygon points="0,36 12,28 28,34 50,26 70,32 80,28 80,36" fill="#2E1A2D"/>
+            <rect x="2"  y="10" width="20" height="12" fill="#3B1033" opacity="0.85"/>
+            <rect x="6"  y="14" width="2"  height="6"  fill="#F4C430" opacity="0.9"/>
+            <rect x="10" y="12" width="1"  height="8"  fill="#FFEEAA" opacity="0.85"/>
+            <rect x="14" y="16" width="2"  height="6"  fill="#F4C430" opacity="0.9"/>
+            <rect x="48" y="24" width="6" height="10" fill="#8B5A2B"/>
+            <rect x="44" y="28" width="4" height="6"  fill="#8B5A2B"/>
+            <rect x="54" y="28" width="4" height="6"  fill="#8B5A2B"/>
+            <rect x="50" y="22" width="4" height="4"  fill="#8B5A2B"/>
+            <rect x="52" y="20" width="2" height="3"  fill="#FF6622"/>
+            <rect x="62" y="30" width="10" height="3" fill="#F4C430"/>
+            <rect x="62" y="26" width="2"  height="4" fill="#F4C430"/>
+            <rect x="70" y="26" width="2"  height="4" fill="#F4C430"/>
+        </svg>''',
+    },
 ]

@@ -162,6 +162,21 @@
 .crew-card:hover .crew-btn {
   background: rgba(0,221,170,0.12);
 }
+.derby-card:hover {
+  border-color: #C14E28;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(193,78,40,0.28);
+}
+.derby-card .card-art { background: #1a0a18; }
+.derby-title      { color: #C14E28; }
+.derby-title span { color: #F4C430; }
+.derby-btn {
+  color: #F4C430;
+  border-color: #F4C430;
+}
+.derby-card:hover .derby-btn {
+  background: rgba(244,196,48,0.12);
+}
 /* ── Scores sous les cartes ──────────────────────────────── */
 .card-scores {
   background: #05050a;
@@ -199,6 +214,7 @@
 .game-card-wrap:has(.pong-card:hover)   .card-scores { border-color: #00CC88; }
 .game-card-wrap:has(.racer-card:hover)  .card-scores { border-color: #FF00AA; }
 .game-card-wrap:has(.crew-card:hover)   .card-scores { border-color: #00DDAA; }
+.game-card-wrap:has(.derby-card:hover)  .card-scores { border-color: #C14E28; }
 
 @media (max-width: 640px) {
   .selector-title { font-size: 36px; }

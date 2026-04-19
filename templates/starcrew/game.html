@@ -20,17 +20,23 @@
   <!-- Welcome screen -->
   <div id="crew-welcome" class="sc-overlay">
     <div class="sc-panel">
-      <a href="/" class="back-link">&#9664; ACCUEIL</a>
+      <a href="/lobby" class="back-link">&#9664; ACCUEIL</a>
       <h1 class="sc-title">STAR<span>CREW</span></h1>
       <p class="sc-subtitle">COOP 2 JOUEURS &bull; PILOTE + ARTILLEUR</p>
       <hr class="sc-divider">
       <div class="player-row sc-p1-row">
         <span class="player-tag sc-p1-tag">P1</span>
-        <input id="sc-p1name" type="text" maxlength="12" placeholder="Pilote" autocomplete="off" spellcheck="false">
+        <input id="sc-p1name" type="text" maxlength="12" placeholder="Pilote"
+               autocomplete="off" spellcheck="false"
+               value="{{ p1name }}"
+               {% if p1name %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <div class="player-row sc-p2-row">
         <span class="player-tag sc-p2-tag">P2</span>
-        <input id="sc-p2name" type="text" maxlength="12" placeholder="Artilleur" autocomplete="off" spellcheck="false">
+        <input id="sc-p2name" type="text" maxlength="12" placeholder="Artilleur"
+               autocomplete="off" spellcheck="false"
+               value="{{ p2name }}"
+               {% if p2name %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <button id="sc-start-btn" class="sc-btn">JOUER &#9658;</button>
       <div class="sc-controls-grid">
@@ -43,8 +49,8 @@
         <div class="ctrl-col">
           <strong class="sc-p2-col">ARTILLEUR</strong>
           <span>&#8592; / &#8594; &mdash; rotation tourelle</span>
-          <span>&#8593; &mdash; tirer 2 lasers (chauffe)</span>
-          <span>&#8595; &mdash; lancer le grapin</span>
+          <span>O &mdash; tirer 2 lasers (chauffe)</span>
+          <span>P &mdash; lancer le grapin</span>
           <span>ENTREE &mdash; acheter au shop</span>
         </div>
       </div>
@@ -83,7 +89,7 @@
       <div id="sc-leaderboard"></div>
       <div class="sc-end-buttons">
         <button id="sc-replay-btn" class="sc-btn sc-secondary-btn">&#9664; REJOUER</button>
-        <a href="/" class="sc-btn sc-menu-link">MENU &#8962;</a>
+        <a href="/lobby" class="sc-btn sc-menu-link">LOBBY &#8962;</a>
       </div>
     </div>
   </div>
