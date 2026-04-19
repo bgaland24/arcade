@@ -2,16 +2,17 @@
 const PP_INPUT = { p1Up: false, p1Down: false, p2Up: false, p2Down: false };
 
 (function () {
+  // e.code = position physique, indépendant de la disposition clavier (AZERTY/QWERTY)
+  // KeyW = touche Z en AZERTY, W en QWERTY — position "haut" naturelle pour P1
   const MAP = {
-    'w': 'p1Up', 'W': 'p1Up',
-    's': 'p1Down', 'S': 'p1Down',
+    'KeyW': 'p1Up', 'KeyS': 'p1Down',
     'ArrowUp': 'p2Up', 'ArrowDown': 'p2Down',
   };
   document.addEventListener('keydown', e => {
-    if (MAP[e.key]) { PP_INPUT[MAP[e.key]] = true; e.preventDefault(); }
+    if (MAP[e.code]) { PP_INPUT[MAP[e.code]] = true; e.preventDefault(); }
   });
   document.addEventListener('keyup', e => {
-    if (MAP[e.key]) PP_INPUT[MAP[e.key]] = false;
+    if (MAP[e.code]) PP_INPUT[MAP[e.code]] = false;
   });
 
   function bind(id, key) {

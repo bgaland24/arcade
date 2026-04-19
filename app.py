@@ -16,65 +16,112 @@ app.register_blueprint(galaxy_bp)
 app.register_blueprint(pongpong_bp)
 
 
-# ── Identification ───────────────────────────────────────
+# ── Helpers ──────────────────────────────────────────────
+def _resolve_player(form_prefix, label, conn):
+    """
+    Identifie ou crée un joueur via pseudo + âge + mois de naissance.
+    - Pseudo existant : vérifie âge + mois (connexion).
+    - Pseudo inconnu  : crée le compte.
+    Retourne (player_dict, error_string).
+    """
+    name      = (form_prefix.get('name',        '') or '').strip()[:20]
+    age_str   = (form_prefix.get('age',         '') or '').strip()
+    month_str = (form_prefix.get('birth_month', '') or '').strip()
+
+    if not name:
+        return None, f'{label} : le pseudo est obligatoire.'
+    if not age_str.isdigit() or not (1 <= int(age_str) <= 120):
+        return None, f'{label} : âge invalide.'
+    if not month_str.isdigit() or not (1 <= int(month_str) <= 12):
+        return None, f'{label} : mois de naissance invalide.'
+
+    age         = int(age_str)
+    birth_month = int(month_str)
+
+    row = conn.execute(
+        'SELECT id, name, age, birth_month FROM players WHERE name = ?', (name,)
+    ).fetchone()
+
+    if row:
+        if row['age'] != age or row['birth_month'] != birth_month:
+            return None, f'{label} : âge ou mois de naissance incorrect pour « {name} ».'
+        return {'id': row['id'], 'name': row['name'], 'age': row['age'], '_new': False}, None
+    else:
+        return {'name': name, 'age': age, 'birth_month': birth_month, '_new': True}, None
+
+
+# ── Login / création (2 joueurs) ─────────────────────────
 @app.route('/', methods=['GET', 'POST'])
 def identify():
-    error = None
+    errors = {}
     if request.method == 'POST':
-        p1_name = request.form.get('p1_name', '').strip()[:20]
-        p1_age  = request.form.get('p1_age',  '').strip()
-        p2_name = request.form.get('p2_name', '').strip()[:20]
-        p2_age  = request.form.get('p2_age',  '').strip()
+        def pf(idx):
+            return {k: request.form.get(f'p{idx}_{k}') for k in ('name', 'age', 'birth_month')}
 
-        # Validation de base
-        if not p1_name or not p2_name:
-            error = 'Les deux joueurs doivent saisir un pseudo.'
-        elif not p1_age.isdigit() or not p2_age.isdigit():
-            error = 'Veuillez saisir un âge valide (nombre entier).'
-        else:
-            # Vérification âge si le joueur existe déjà
-            with get_db() as conn:
-                for name, age_str, label in [
-                    (p1_name, p1_age, 'Joueur 1'),
-                    (p2_name, p2_age, 'Joueur 2'),
-                ]:
-                    row = conn.execute(
-                        'SELECT age FROM players WHERE name = ?', (name,)
-                    ).fetchone()
-                    if row and row['age'] != int(age_str):
-                        error = f'{label} : âge incorrect pour le pseudo « {name} ».'
-                        break
+        now = datetime.now(timezone.utc).isoformat()
+        players = {}
 
-        if not error:
-            now = datetime.now(timezone.utc).isoformat()
-            with get_db() as conn:
-                for name, age in [(p1_name, int(p1_age)), (p2_name, int(p2_age))]:
-                    row = conn.execute(
-                        'SELECT id FROM players WHERE name = ?', (name,)
-                    ).fetchone()
-                    if row:
-                        conn.execute(
-                            'UPDATE players SET last_seen = ? WHERE id = ?',
-                            (now, row['id'])
-                        )
-                        pid = row['id']
-                    else:
+        with get_db() as conn:
+            for idx, label in ((1, 'Joueur 1'), (2, 'Joueur 2')):
+                pdata, err = _resolve_player(pf(idx), label, conn)
+                if err:
+                    errors[f'p{idx}'] = err
+                else:
+                    players[idx] = pdata
+
+            if not errors:
+                for idx in (1, 2):
+                    p = players[idx]
+                    if p.pop('_new', False):
                         cur = conn.execute(
-                            'INSERT INTO players (name, age, created_at, last_seen) VALUES (?,?,?,?)',
-                            (name, age, now, now)
+                            'INSERT INTO players (name, age, birth_month, created_at, last_seen)'
+                            ' VALUES (?,?,?,?,?)',
+                            (p['name'], p['age'], p['birth_month'], now, now)
                         )
-                        pid = cur.lastrowid
-                    if name == p1_name:
-                        session['p1'] = {'id': pid, 'name': p1_name, 'age': age}
+                        p['id'] = cur.lastrowid
                     else:
-                        session['p2'] = {'id': pid, 'name': p2_name, 'age': age}
+                        conn.execute('UPDATE players SET last_seen = ? WHERE id = ?', (now, p['id']))
+                    session[f'p{idx}'] = {'id': p['id'], 'name': p['name'], 'age': p['age']}
+                return redirect(url_for('lobby'))
 
-            return redirect(url_for('lobby'))
-
-    return render_template('identify.html', error=error)
+    return render_template('identify.html', errors=errors)
 
 
-# ── Recherche joueurs (autocomplete) ────────────────────
+# ── Création de compte (page dédiée) ────────────────────
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = None
+    success = False
+    if request.method == 'POST':
+        name      = (request.form.get('name',        '') or '').strip()[:20]
+        age_str   = (request.form.get('age',         '') or '').strip()
+        month_str = (request.form.get('birth_month', '') or '').strip()
+
+        if not name:
+            error = 'Le pseudo est obligatoire.'
+        elif not age_str.isdigit() or not (1 <= int(age_str) <= 120):
+            error = 'Âge invalide.'
+        elif not month_str.isdigit() or not (1 <= int(month_str) <= 12):
+            error = 'Mois de naissance invalide.'
+        else:
+            age         = int(age_str)
+            birth_month = int(month_str)
+            now         = datetime.now(timezone.utc).isoformat()
+            with get_db() as conn:
+                if conn.execute('SELECT id FROM players WHERE name = ?', (name,)).fetchone():
+                    error = 'Ce pseudo est déjà pris.'
+                else:
+                    conn.execute(
+                        'INSERT INTO players (name, age, birth_month, created_at, last_seen)'
+                        ' VALUES (?,?,?,?,?)',
+                        (name, age, birth_month, now, now)
+                    )
+                    success = True
+
+    return render_template('register.html', error=error, success=success)
+
+
+# ── Autocomplete pseudo ──────────────────────────────────
 @app.route('/api/players')
 def search_players():
     q = request.args.get('q', '').strip()

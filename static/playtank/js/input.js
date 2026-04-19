@@ -16,7 +16,7 @@ const INPUT = {
 // ── Mapping clavier ──────────────────────────────────────
 const KEY_MAP = {
   // Joueur 1
-  'KeyT':        ['p1', 'turretUp'],
+  'KeyJ':        ['p1', 'turretUp'],
   'KeyD':        ['p1', 'moveRight'],
   'KeyA':        ['p1', 'moveLeft'],
   'KeyG':        ['p1', 'turretDown'],

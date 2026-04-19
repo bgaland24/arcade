@@ -26,11 +26,17 @@
       <hr class="gx-divider">
       <div class="player-row gx-p1-row">
         <span class="player-tag gx-p1-tag">P1</span>
-        <input id="gx-p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false">
+        <input id="gx-p1name" type="text" maxlength="12" placeholder="Joueur 1"
+               autocomplete="off" spellcheck="false"
+               value="{{ p1name }}"
+               {% if p1name %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <div class="player-row gx-p2-row">
         <span class="player-tag gx-p2-tag">P2</span>
-        <input id="gx-p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false">
+        <input id="gx-p2name" type="text" maxlength="12" placeholder="Joueur 2"
+               autocomplete="off" spellcheck="false"
+               value="{{ p2name }}"
+               {% if p2name %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <button id="gx-start-btn" class="gx-btn">JOUER &#9658;</button>
       <div class="gx-controls-grid">
@@ -62,7 +68,7 @@
       <div id="gx-leaderboard"></div>
       <div class="gx-end-buttons">
         <button id="gx-replay-btn" class="gx-btn gx-secondary-btn">&#9664; REJOUER</button>
-        <a href="/" class="gx-btn gx-menu-link">MENU &#8962;</a>
+        <a href="/lobby" class="gx-btn gx-menu-link">RETOUR AU LOBBY &#8962;</a>
       </div>
     </div>
   </div>

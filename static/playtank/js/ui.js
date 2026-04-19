@@ -35,6 +35,51 @@ function drawHUD(ctx, tanks, timeLeft, wind, p1name, p2name) {
 
   // ── Joueur 2 (droite) ──────────────────────────────────
   _drawPlayerHUD(ctx, tanks[1], p2name, W - 10, 'right');
+
+  // ── Bonus actifs ───────────────────────────────────────
+  _drawActiveBonuses(ctx, tanks, W);
+}
+
+function _drawActiveBonuses(ctx, tanks, W) {
+  const ICONS = {
+    EXPLOSIF:  { color: '#FF4400', label: 'EXPLO' },
+    RAFALE:    { color: '#FFAA00', label: 'RAFALE' },
+    BOUCLIER:  { color: '#00CCFF', label: 'BOUCLIER' },
+    NITRO:     { color: '#FF00FF', label: 'NITRO' },
+  };
+
+  [tanks[0], tanks[1]].forEach((tank, i) => {
+    const bonuses = [];
+    if (tank.bonusExplosif)   bonuses.push('EXPLOSIF');
+    if (tank.bonusRafale > 0) bonuses.push('RAFALE');
+    if (tank.bonusBouclier)   bonuses.push('BOUCLIER');
+    if (tank.bonusNitro > 0)  bonuses.push('NITRO');
+    if (!bonuses.length) return;
+
+    const baseX = i === 0 ? 10 : W - 10;
+    const align = i === 0 ? 'left' : 'right';
+    let offsetX = 0;
+
+    for (const key of bonuses) {
+      const meta  = ICONS[key];
+      const tag   = meta.label;
+      const tw    = tag.length * 6 + 8;
+      const bx    = i === 0 ? baseX + offsetX : baseX - offsetX - tw;
+
+      ctx.fillStyle = meta.color + '33';
+      ctx.fillRect(bx, 47, tw, 13);
+      ctx.strokeStyle = meta.color;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bx, 47, tw, 13);
+
+      ctx.fillStyle = meta.color;
+      ctx.font = 'bold 7px monospace';
+      ctx.textAlign = align === 'left' ? 'left' : 'right';
+      ctx.fillText(tag, i === 0 ? bx + 4 : bx + tw - 4, 57);
+
+      offsetX += tw + 3;
+    }
+  });
 }
 
 function _drawPlayerHUD(ctx, tank, name, startX, align) {
@@ -126,6 +171,67 @@ function _formatTime(s) {
   const m  = Math.floor(Math.max(0, s) / 60);
   const ss = Math.floor(Math.max(0, s) % 60);
   return `${m}:${ss.toString().padStart(2, '0')}`;
+}
+
+// ── Contrôles clavier (desktop uniquement) ───────────────
+function drawControls(ctx) {
+  if (IS_TOUCH) return;
+
+  const W = CONFIG.CANVAS_W;
+  const H = CONFIG.CANVAS_H;
+  const C = CONFIG.COLOR;
+
+  const ROWS = [
+    { action: 'moveLeft',   p1: 'A ◄',     p2: '► →'    },
+    { action: 'moveRight',  p1: 'D ►',     p2: '◄ ←'    },
+    { action: 'turretUp',   p1: 'J ▲',     p2: '▼ Num4' },
+    { action: 'turretDown', p1: 'G ▼',     p2: '▲ Num6' },
+    { action: 'fire',       p1: 'ESPACE',  p2: 'ENTRÉE' },
+  ];
+
+  const boxW  = 110;
+  const rowH  = 14;
+  const padX  = 8;
+  const padY  = 6;
+  const totalH = ROWS.length * rowH + padY * 2;
+  const baseY  = H - totalH - 6;
+
+  // Fond P1 (bas gauche)
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(4, baseY, boxW, totalH);
+  ctx.strokeStyle = `rgba(${_hexToRgb(C.P1_BODY)},0.4)`;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(4, baseY, boxW, totalH);
+
+  // Fond P2 (bas droite)
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.fillRect(W - 4 - boxW, baseY, boxW, totalH);
+  ctx.strokeStyle = `rgba(${_hexToRgb(C.P2_BODY)},0.4)`;
+  ctx.strokeRect(W - 4 - boxW, baseY, boxW, totalH);
+
+  ROWS.forEach((row, i) => {
+    const y = baseY + padY + i * rowH + rowH - 3;
+    const isActive = i === ROWS.length - 1; // ligne tir
+
+    // P1
+    ctx.fillStyle = isActive ? '#FF8844' : 'rgba(255,255,255,0.55)';
+    ctx.font = `${isActive ? 'bold ' : ''}9px monospace`;
+    ctx.textAlign = 'left';
+    ctx.fillText(row.p1, 4 + padX, y);
+
+    // P2
+    ctx.fillStyle = isActive ? '#FF8844' : 'rgba(255,255,255,0.55)';
+    ctx.font = `${isActive ? 'bold ' : ''}9px monospace`;
+    ctx.textAlign = 'right';
+    ctx.fillText(row.p2, W - 4 - padX, y);
+  });
+}
+
+function _hexToRgb(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `${r},${g},${b}`;
 }
 
 // ── Boutons tactiles ─────────────────────────────────────

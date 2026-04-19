@@ -12,7 +12,10 @@ def calculate_galaxy_score(kill_points, shots_fired, shots_hit, wave_reached):
 
 @blueprint.route('/galaxy')
 def game():
-    return render_template('galaxy/game.html')
+    from flask import session
+    return render_template('galaxy/game.html',
+                           p1name=session.get('p1', {}).get('name', ''),
+                           p2name=session.get('p2', {}).get('name', ''))
 
 @blueprint.route('/api/galaxy/scores', methods=['GET'])
 def get_scores_route():

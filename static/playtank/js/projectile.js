@@ -13,13 +13,14 @@
  *   'oob'     → sorti des limites (pas d'effet)
  */
 class Projectile {
-  constructor(x, y, vx, vy, owner) {
-    this.x      = x;
-    this.y      = y;
-    this.vx     = vx;
-    this.vy     = vy;
-    this.owner  = owner;  // index joueur (0 ou 1)
-    this.active = true;
+  constructor(x, y, vx, vy, owner, explosive = false) {
+    this.x         = x;
+    this.y         = y;
+    this.vx        = vx;
+    this.vy        = vy;
+    this.owner     = owner;      // index joueur (0 ou 1)
+    this.explosive = explosive;  // rayon d'explosion ×2 si true
+    this.active    = true;
 
     // Traînée visuelle
     this.trail  = [];
@@ -76,10 +77,20 @@ class Projectile {
     ctx.fillStyle = glow;
     ctx.fillRect(this.x - 7, this.y - 7, 14, 14);
 
-    // Pixel obus
-    ctx.fillStyle = CONFIG.COLOR.BULLET;
+    // Pixel obus (rouge si explosif)
+    ctx.fillStyle = this.explosive ? '#FF2200' : CONFIG.COLOR.BULLET;
     ctx.fillRect(this.x - 3, this.y - 3, 6, 6);
     ctx.fillStyle = '#fff';
     ctx.fillRect(this.x - 2, this.y - 2, 2, 2);
+
+    // Anneau rouge pulsant autour de l'obus explosif
+    if (this.explosive) {
+      const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 100);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 8 + pulse * 3, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(255,50,0,${0.5 + pulse * 0.4})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
   }
 }

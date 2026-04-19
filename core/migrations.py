@@ -20,16 +20,20 @@ def _m001_baseline(conn):
     pass
 
 
-# ── Template pour la prochaine migration ─────────────────
-# def _m002_exemple(conn):
-#     """Ajoute une colonne avatar à players."""
-#     conn.execute('ALTER TABLE players ADD COLUMN avatar TEXT')
+def _m002_add_birth_month(conn):
+    """
+    Ajout du mois de naissance sur la table players.
+    birth_month : 1-12, troisième facteur d'identification avec pseudo + âge.
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(players)").fetchall()}
+    if 'birth_month' not in cols:
+        conn.execute('ALTER TABLE players ADD COLUMN birth_month INTEGER')
 
 
 # ── Registre (ordre strict) ───────────────────────────────
 MIGRATIONS = [
     (1, _m001_baseline),
-    # (2, _m002_exemple),  # ← décommenter + implémenter
+    (2, _m002_add_birth_month),
 ]
 
 

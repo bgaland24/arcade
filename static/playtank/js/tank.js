@@ -26,6 +26,12 @@ class Tank {
     this.shotsHit    = 0;
     this.hitFlash    = 0;            // secondes restantes de flash de dégât
 
+    // Bonus actifs
+    this.bonusExplosif  = false;     // prochain obus : rayon ×2
+    this.bonusRafale    = 0;         // secondes restantes : cooldown réduit
+    this.bonusBouclier  = false;     // absorbe le prochain impact
+    this.bonusNitro     = 0;         // secondes restantes : vitesse ×2
+
     const C = CONFIG.COLOR;
     this.color  = playerIndex === 0 ? C.P1_BODY : C.P2_BODY;
     this.dark   = playerIndex === 0 ? C.P1_DARK : C.P2_DARK;
@@ -36,7 +42,8 @@ class Tank {
 
   // ── Déplacement ─────────────────────────────────────────
   move(direction, dt) {
-    const newX = this.x + direction * CONFIG.TANK_SPEED * dt;
+    const speed = CONFIG.TANK_SPEED * (this.bonusNitro > 0 ? 2 : 1);
+    const newX  = this.x + direction * speed * dt;
     this.x = Math.max(28, Math.min(this.terrain.width - 28, newX));
   }
 
@@ -52,7 +59,7 @@ class Tank {
 
   fire() {
     if (!this.canFire()) return null;
-    this.cooldown = CONFIG.FIRE_COOLDOWN_S;
+    this.cooldown = this.bonusRafale > 0 ? 0.8 : CONFIG.FIRE_COOLDOWN_S;
     this.shotsFired++;
 
     const rad    = this.localAngle * Math.PI / 180;
@@ -64,25 +71,36 @@ class Tank {
     const tipX = pivX + this.dir * Math.cos(rad) * barLen;
     const tipY = pivY -           Math.sin(rad)  * barLen;
 
-    const spd = CONFIG.SHELL_SPEED;
+    const spd      = CONFIG.SHELL_SPEED;
+    const explosive = this.bonusExplosif;
+    this.bonusExplosif = false;     // consommé au tir
     return new Projectile(
       tipX, tipY,
       this.dir * Math.cos(rad) * spd,
       -Math.sin(rad) * spd,
-      this.playerIndex
+      this.playerIndex,
+      explosive
     );
   }
 
   // ── Mise à jour ─────────────────────────────────────────
   update(dt) {
-    if (this.cooldown  > 0) this.cooldown  -= dt;
-    if (this.hitFlash  > 0) this.hitFlash  -= dt;
+    if (this.cooldown   > 0) this.cooldown   -= dt;
+    if (this.hitFlash   > 0) this.hitFlash   -= dt;
+    if (this.bonusRafale > 0) this.bonusRafale -= dt;
+    if (this.bonusNitro  > 0) this.bonusNitro  -= dt;
   }
 
   // ── Dégâts ──────────────────────────────────────────────
   receiveHit() {
+    if (this.bonusBouclier) {
+      this.bonusBouclier = false;
+      this.hitFlash = 0.3;   // flash visuel mais pas de dégât
+      return false;           // impact absorbé
+    }
     this.hits++;
     this.hitFlash = 0.45;
+    return true;
   }
 
   isAlive() { return this.hits < CONFIG.HITS_TO_WIN; }
@@ -167,6 +185,29 @@ class Tank {
     ctx.restore();
 
     ctx.restore(); // fin du flip éventuel
+
+    // Bouclier actif : anneau cyan pulsant
+    if (this.bonusBouclier) {
+      const pulse = 0.6 + 0.4 * Math.sin(Date.now() / 180);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y - 12, 32, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(0,220,255,${pulse})`;
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#00CCFF';
+      ctx.shadowBlur  = 10;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Nitro actif : traînée violette sous les chenilles
+    if (this.bonusNitro > 0) {
+      ctx.save();
+      ctx.globalAlpha = 0.45 + 0.3 * Math.sin(Date.now() / 80);
+      ctx.fillStyle = '#FF00FF';
+      ctx.fillRect(x - 20, y + 4, 40, 5);
+      ctx.restore();
+    }
 
     // Marqueurs de touches (au-dessus du tank)
     for (let i = 0; i < CONFIG.HITS_TO_WIN; i++) {

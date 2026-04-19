@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcade — Créer un compte</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/selector.css') }}">
+  <style>
+    .id-panel {
+      background: linear-gradient(160deg, #1a1208 0%, #0a0705 100%);
+      border: 2px solid #FFD700;
+      padding: 36px 44px 30px;
+      width: 90vw;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(255,215,0,0.1);
+    }
+    .id-title {
+      font-size: 44px;
+      letter-spacing: 10px;
+      color: #FFD700;
+      text-shadow: 0 0 14px rgba(255,215,0,0.35);
+      margin-bottom: 4px;
+    }
+    .id-subtitle {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #666;
+      margin-bottom: 28px;
+    }
+    .id-divider {
+      border: none;
+      border-top: 1px solid rgba(255,215,0,0.2);
+      margin: 0 0 24px;
+    }
+    .id-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+    .id-field label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #555;
+    }
+    .id-field input,
+    .id-field select {
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 8px 11px;
+      letter-spacing: 1px;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .id-field input:focus,
+    .id-field select:focus { border-color: #FFD700; }
+    .id-field input::placeholder { color: #444; }
+    .id-field select option { background: #1a1208; color: #fff; }
+    .id-field-hint {
+      font-size: 9px;
+      color: #444;
+      letter-spacing: 1px;
+    }
+
+    .id-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .id-row-2 .id-field { margin-bottom: 0; }
+
+    .id-auth-hint {
+      font-size: 10px;
+      color: #555;
+      letter-spacing: 1px;
+      border: 1px solid #2a2a2a;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      text-align: left;
+      line-height: 1.7;
+    }
+
+    .id-submit {
+      background: #FFD700;
+      color: #111;
+      border: none;
+      font-family: 'Courier New', monospace;
+      font-size: 15px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      padding: 13px 0;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .id-submit:hover  { background: #ffe84d; }
+    .id-submit:active { transform: scale(0.98); }
+
+    .id-error {
+      background: rgba(255,50,50,0.10);
+      border: 1px solid #FF4444;
+      color: #FF9999;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .id-success {
+      background: rgba(0,200,100,0.08);
+      border: 1px solid #00CC66;
+      color: #66FFAA;
+      font-size: 12px;
+      letter-spacing: 1px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      text-align: left;
+      line-height: 1.8;
+    }
+    .id-success a { color: #FFD700; }
+    .id-note {
+      font-size: 9px;
+      color: #3a3a3a;
+      letter-spacing: 1px;
+      margin-top: 18px;
+      line-height: 1.8;
+    }
+    .id-note a {
+      color: #666;
+      text-decoration: none;
+      border-bottom: 1px solid #444;
+    }
+    .id-note a:hover { color: #FFD700; border-color: #FFD700; }
+  </style>
+</head>
+<body class="selector-body">
+  <div class="id-panel">
+    <h1 class="id-title">Jeux d'arcade</h1>
+    <p class="id-subtitle">CRÉER UN COMPTE</p>
+    <hr class="id-divider">
+
+    {% if success %}
+    <div class="id-success">
+      &#10003; Compte créé avec succès !<br>
+      Vous pouvez maintenant <a href="/">vous connecter</a>.
+    </div>
+    {% else %}
+
+    {% if error %}
+    <div class="id-error">&#9888; {{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/register">
+
+      <div class="id-field">
+        <label>PSEUDO</label>
+        <input type="text" name="name"
+               maxlength="20" placeholder="Votre pseudo affiché dans les classements"
+               value="{{ request.form.get('name', '') }}"
+               autocomplete="off" spellcheck="false" required>
+        <span class="id-field-hint">20 caractères max. Visible par tous les joueurs.</span>
+      </div>
+
+      <div class="id-row-2">
+        <div class="id-field">
+          <label>ÂGE</label>
+          <input type="number" name="age"
+                 min="1" max="120" placeholder="—"
+                 value="{{ request.form.get('age', '') }}" required>
+        </div>
+        <div class="id-field">
+          <label>MOIS DE NAISSANCE</label>
+          <select name="birth_month" required>
+            <option value="" disabled
+              {{ 'selected' if not request.form.get('birth_month') }}>
+              — mois —
+            </option>
+            {% for m, lbl in [
+              ('1','Janvier'),('2','Février'),('3','Mars'),('4','Avril'),
+              ('5','Mai'),('6','Juin'),('7','Juillet'),('8','Août'),
+              ('9','Septembre'),('10','Octobre'),('11','Novembre'),('12','Décembre')
+            ] %}
+            <option value="{{ m }}"
+              {{ 'selected' if request.form.get('birth_month') == m }}>
+              {{ lbl }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="id-auth-hint">
+        &#9432; Ces trois informations (pseudo + âge + mois de naissance) vous serviront
+        à vous connecter. Retenez-les bien, elles ne peuvent pas être récupérées.
+      </div>
+
+      <button type="submit" class="id-submit">CRÉER MON COMPTE &#9658;</button>
+    </form>
+
+    {% endif %}
+
+    <p class="id-note">
+      Déjà un compte ? <a href="/">Se connecter</a>
+    </p>
+  </div>
+</body>
+</html>

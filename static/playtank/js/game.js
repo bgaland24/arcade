@@ -8,6 +8,7 @@
 // ── Variables globales de jeu ────────────────────────────
 let canvas, ctx;
 let terrain, tanks, projectiles, explosions;
+let bonusManager;
 let wind, windTimer;
 let timeLeft;
 let gameState = 'idle';
@@ -98,6 +99,8 @@ function initGame() {
   // Vent initial aléatoire
   wind      = _randomWind();
   windTimer = CONFIG.WIND_CHANGE_INTERVAL;
+
+  bonusManager = new BonusManager();
 }
 
 // ── Boucle principale ─────────────────────────────────────
@@ -143,11 +146,13 @@ function update(dt) {
     }
 
     if (result === 'terrain') {
-      // Destruction terrain
-      terrain.destroy(proj.x, proj.y, CONFIG.EXPLOSION_RADIUS);
-      explosions.push(new Explosion(proj.x, proj.y));
-      // Dégât splash
-      _checkSplash(proj);
+      const radius = proj.explosive
+        ? CONFIG.EXPLOSION_RADIUS * 2
+        : CONFIG.EXPLOSION_RADIUS;
+      terrain.destroy(proj.x, proj.y, radius);
+      bonusManager.onTerrainChanged(terrain);
+      explosions.push(new Explosion(proj.x, proj.y, radius));
+      _checkSplash(proj, radius);
       projectiles.splice(i, 1);
       continue;
     }
@@ -155,9 +160,10 @@ function update(dt) {
     // Collision directe avec tank ennemi (en vol)
     let hit = false;
     for (const tank of tanks) {
-      if (tank.player === proj.owner) continue;
+      if (tank.playerIndex === proj.owner) continue;
       if (tank.containsPoint(proj.x, proj.y)) {
-        explosions.push(new Explosion(proj.x, proj.y));
+        const radius = proj.explosive ? CONFIG.EXPLOSION_RADIUS * 2 : CONFIG.EXPLOSION_RADIUS;
+        explosions.push(new Explosion(proj.x, proj.y, radius));
         _dealHit(tank, proj.owner);
         projectiles.splice(i, 1);
         hit = true;
@@ -172,6 +178,9 @@ function update(dt) {
     explosions[i].update(dt);
     if (!explosions[i].active) explosions.splice(i, 1);
   }
+
+  // Bonus
+  bonusManager.update(dt, terrain, tanks);
 }
 
 function _handleInput(dt) {
@@ -195,8 +204,8 @@ function _handleInput(dt) {
   }
 }
 
-function _checkSplash(proj) {
-  const r = CONFIG.EXPLOSION_RADIUS * CONFIG.SPLASH_RATIO;
+function _checkSplash(proj, explosionRadius) {
+  const r = explosionRadius * CONFIG.SPLASH_RATIO;
   for (const tank of tanks) {
     if (tank.playerIndex === proj.owner) continue;
     const dx   = tank.x - proj.x;
@@ -209,10 +218,10 @@ function _checkSplash(proj) {
 }
 
 function _dealHit(tank, attackerIdx) {
-  tank.receiveHit();
-  tanks[attackerIdx].shotsHit++;
-  if (!tank.isAlive()) {
-    endGame(attackerIdx);
+  const absorbed = tank.receiveHit() === false;
+  if (!absorbed) {
+    tanks[attackerIdx].shotsHit++;
+    if (!tank.isAlive()) endGame(attackerIdx);
   }
 }
 
@@ -283,11 +292,15 @@ function render() {
   // Projectiles
   for (const proj of projectiles) proj.render(ctx);
 
+  // Bonus (parachutés)
+  bonusManager.render(ctx);
+
   // HUD
   drawHUD(ctx, tanks, timeLeft, wind, p1name, p2name);
 
-  // Boutons mobiles
+  // Boutons mobiles ou contrôles clavier
   if (IS_TOUCH) drawMobileButtons(ctx);
+  else drawControls(ctx);
 }
 
 function _drawSun(ctx) {
