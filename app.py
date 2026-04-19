@@ -8,6 +8,7 @@ from games.galaxy import blueprint as galaxy_bp
 from games.pongpong import blueprint as pongpong_bp
 from games.galaxyracer import blueprint as galaxyracer_bp
 from games.starcrew import blueprint as starcrew_bp
+from games.horsederby import blueprint as horsederby_bp
 from datetime import datetime, timezone
 
 app = Flask(__name__)
@@ -18,6 +19,7 @@ app.register_blueprint(galaxy_bp)
 app.register_blueprint(pongpong_bp)
 app.register_blueprint(galaxyracer_bp)
 app.register_blueprint(starcrew_bp)
+app.register_blueprint(horsederby_bp)
 
 
 # ── Identification ───────────────────────────────────────
@@ -103,6 +105,13 @@ def lobby():
     def _normalize(entry, game_id):
         if game_id == 'galaxy' or game_id == 'galaxyracer' or game_id == 'starcrew':
             players = f"{entry.get('p1_name', '?')} & {entry.get('p2_name', '?')}"
+        elif game_id == 'horsederby':
+            winner = entry.get('winner', '')
+            winner_name = entry.get('winner_name', '-')
+            if winner in ('P1', 'P2'):
+                players = f"{entry.get('p1_name', '?')} vs {entry.get('p2_name', '?')} (W:{winner_name})"
+            else:
+                players = f"{entry.get('p1_name', '?')} vs {entry.get('p2_name', '?')}"
         elif game_id == 'pongpong':
             players = f"{entry.get('player_name', '?')} vs {entry.get('opponent_name', '?')}"
         else:  # playtank
