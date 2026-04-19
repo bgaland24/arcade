@@ -6,7 +6,7 @@
  * Regles :
  * - Defilement vertical continu, obstacles (asteroides) descendent.
  * - Chaque joueur a 3 vies ; touche un asteroide => perd 1 vie + invincibilite 1.6s.
- * - La partie se termine quand les DEUX joueurs sont a 0 vie.
+ * - La partie se termine quand l'UN des joueurs est a 0 vie.
  * - Pickup dores ramasses => +250 pts + 1 vie si possible... ici juste +score.
  * - Score = distance parcourue + bonus vies restantes + bonus pickups (calcule server-side).
  */
@@ -184,8 +184,8 @@ function _racerUpdate(dt) {
     racerBooms.push(new RacerBoom(ship.x, ship.y - 10, RACER.COLOR.PICKUP));
   }
 
-  // Fin de partie : les deux sont morts
-  if (!racerShips[0].active && !racerShips[1].active) {
+  // Fin de partie : un seul joueur mort suffit
+  if (!racerShips[0].active || !racerShips[1].active) {
     _racerEndGame();
   }
 }

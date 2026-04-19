@@ -13,7 +13,10 @@ def calculate_racer_score(distance, p1_lives_left, p2_lives_left, pickups):
 
 @blueprint.route('/galaxyracer')
 def game():
-    return render_template('galaxyracer/game.html')
+    from flask import session
+    return render_template('galaxyracer/game.html',
+                           p1name=session.get('p1', {}).get('name', ''),
+                           p2name=session.get('p2', {}).get('name', ''))
 
 
 @blueprint.route('/api/galaxyracer/scores', methods=['GET'])

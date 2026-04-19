@@ -20,17 +20,23 @@
   <!-- Welcome screen -->
   <div id="racer-welcome" class="rcr-overlay">
     <div class="rcr-panel">
-      <a href="/" class="back-link">&#9664; ACCUEIL</a>
+      <a href="/lobby" class="back-link">&#9664; ACCUEIL</a>
       <h1 class="rcr-title">GALAXY<br><span>RACER</span></h1>
       <p class="rcr-subtitle">COURSE SPATIALE &bull; 2 JOUEURS &bull; ESQUIVE</p>
       <hr class="rcr-divider">
       <div class="player-row rcr-p1-row">
         <span class="player-tag rcr-p1-tag">P1</span>
-        <input id="rcr-p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false">
+        <input id="rcr-p1name" type="text" maxlength="12" placeholder="Joueur 1"
+               autocomplete="off" spellcheck="false"
+               value="{{ p1name }}"
+               {% if p1name %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <div class="player-row rcr-p2-row">
         <span class="player-tag rcr-p2-tag">P2</span>
-        <input id="rcr-p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false">
+        <input id="rcr-p2name" type="text" maxlength="12" placeholder="Joueur 2"
+               autocomplete="off" spellcheck="false"
+               value="{{ p2name }}"
+               {% if p2name %}readonly style="opacity:.7;cursor:default"{% endif %}>
       </div>
       <button id="rcr-start-btn" class="rcr-btn">JOUER &#9658;</button>
       <div class="rcr-controls-grid">
@@ -60,7 +66,7 @@
       <div id="rcr-leaderboard"></div>
       <div class="rcr-end-buttons">
         <button id="rcr-replay-btn" class="rcr-btn rcr-secondary-btn">&#9664; REJOUER</button>
-        <a href="/" class="rcr-btn rcr-menu-link">MENU &#8962;</a>
+        <a href="/lobby" class="rcr-btn rcr-menu-link">LOBBY &#8962;</a>
       </div>
     </div>
   </div>
