@@ -6,6 +6,7 @@ from core.db import init_db, get_db  # noqa: F401 — init_db ré-exporté pour 
 from games.playtank import blueprint as playtank_bp
 from games.galaxy import blueprint as galaxy_bp
 from games.pongpong import blueprint as pongpong_bp
+from games.galaxyracer import blueprint as galaxyracer_bp
 from datetime import datetime, timezone
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ app.secret_key = os.environ.get('SECRET_KEY', 'arcade-secret-key-change-in-prod'
 app.register_blueprint(playtank_bp)
 app.register_blueprint(galaxy_bp)
 app.register_blueprint(pongpong_bp)
+app.register_blueprint(galaxyracer_bp)
 
 
 # ── Identification ───────────────────────────────────────
@@ -97,7 +99,7 @@ def lobby():
     from core.scores import get_scores
 
     def _normalize(entry, game_id):
-        if game_id == 'galaxy':
+        if game_id == 'galaxy' or game_id == 'galaxyracer':
             players = f"{entry.get('p1_name', '?')} & {entry.get('p2_name', '?')}"
         elif game_id == 'pongpong':
             players = f"{entry.get('player_name', '?')} vs {entry.get('opponent_name', '?')}"

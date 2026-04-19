@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Galaxy Racer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='galaxyracer/css/racer.css') }}">
+</head>
+<body>
+
+  <div id="portrait-warning">
+    <div class="pw-box">
+      <div class="pw-icon">&#8635;</div>
+      <p>Tournez votre appareil</p>
+      <p>en mode <strong>paysage</strong></p>
+    </div>
+  </div>
+
+  <!-- Welcome screen -->
+  <div id="racer-welcome" class="rcr-overlay">
+    <div class="rcr-panel">
+      <a href="/" class="back-link">&#9664; ACCUEIL</a>
+      <h1 class="rcr-title">GALAXY<br><span>RACER</span></h1>
+      <p class="rcr-subtitle">COURSE SPATIALE &bull; 2 JOUEURS &bull; ESQUIVE</p>
+      <hr class="rcr-divider">
+      <div class="player-row rcr-p1-row">
+        <span class="player-tag rcr-p1-tag">P1</span>
+        <input id="rcr-p1name" type="text" maxlength="12" placeholder="Joueur 1" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="player-row rcr-p2-row">
+        <span class="player-tag rcr-p2-tag">P2</span>
+        <input id="rcr-p2name" type="text" maxlength="12" placeholder="Joueur 2" autocomplete="off" spellcheck="false">
+      </div>
+      <button id="rcr-start-btn" class="rcr-btn">JOUER &#9658;</button>
+      <div class="rcr-controls-grid">
+        <div class="ctrl-col">
+          <strong class="rcr-p1-col">JOUEUR 1</strong>
+          <span>A / D &mdash; gauche / droite</span>
+          <span>W &mdash; boost (limite)</span>
+        </div>
+        <div class="ctrl-sep"></div>
+        <div class="ctrl-col">
+          <strong class="rcr-p2-col">JOUEUR 2</strong>
+          <span>&#8592; / &#8594; &mdash; gauche / droite</span>
+          <span>&#8593; &mdash; boost (limite)</span>
+        </div>
+      </div>
+      <p class="touch-note">Sur mobile : boutons tactiles affiches a l'ecran</p>
+    </div>
+  </div>
+
+  <!-- Game over screen -->
+  <div id="racer-gameover" class="rcr-overlay" style="display:none">
+    <div class="rcr-panel rcr-wide-panel">
+      <div id="rcr-result-banner"></div>
+      <div id="rcr-result-stats"></div>
+      <hr class="rcr-divider">
+      <h3 class="rcr-lb-title">MEILLEURS SCORES</h3>
+      <div id="rcr-leaderboard"></div>
+      <div class="rcr-end-buttons">
+        <button id="rcr-replay-btn" class="rcr-btn rcr-secondary-btn">&#9664; REJOUER</button>
+        <a href="/" class="rcr-btn rcr-menu-link">MENU &#8962;</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-container">
+    <canvas id="racerCanvas"></canvas>
+  </div>
+
+  <!-- Script load order is critical -->
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-config.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-input.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-obstacles.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-player.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-hud.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='galaxyracer/js/racer-game.js') }}"></script>
+</body>
+</html>
