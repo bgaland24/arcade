@@ -55,6 +55,7 @@ def init_db():
         conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('playtank', 'PlayTank')")
         conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('galaxy', 'Galaxy Space Attack')")
         conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('pongpong', 'PongPong')")
+        conn.execute("INSERT OR IGNORE INTO games (id, name) VALUES ('galaxyracer', 'Galaxy Racer')")
         for fn in _db_setup_funcs:
             fn(conn)
         run_pending(conn)
